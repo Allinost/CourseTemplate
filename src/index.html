@@ -41,7 +41,7 @@
       <section class="panel-section">
         <h2 class="panel-title">画布比例 <span id="ratio-status">16:9</span></h2>
         <div class="ratio-list" id="ratio-list">
-          <button class="ratio-btn" type="button" data-ratio="16:9" aria-pressed="true">
+          <button class="ratio-btn" type="button" data-ratio="16:9" aria-pressed="false">
             <span class="ratio-btn__value">16 : 9</span>
             <span class="ratio-btn__label">横版内容</span>
           </button>
@@ -57,11 +57,82 @@
             <span class="ratio-btn__value">3 : 4</span>
             <span class="ratio-btn__label">竖版封面</span>
           </button>
-          <button class="ratio-btn ratio-btn--wide" type="button" data-ratio="auto" aria-pressed="false">
+          <button class="ratio-btn ratio-btn--wide" type="button" data-ratio="auto" aria-pressed="true">
             <span class="ratio-btn__value">跟随窗口</span>
             <span class="ratio-btn__label">横屏 16:9 · 竖屏 3:5</span>
           </button>
         </div>
+      </section>
+
+      <section class="panel-section">
+        <h2 class="panel-title">外观 / 自定义 <span id="appearance-status">preset</span></h2>
+        <div class="appearance-grid">
+          <label class="appearance-field appearance-field--wide">
+            背景效果
+            <select id="bg-effect"></select>
+          </label>
+          <label class="appearance-field">
+            渐变角度
+            <span class="range-row"><input id="bg-angle" type="range" min="0" max="360" step="15" value="135"><output id="bg-angle-value">135°</output></span>
+          </label>
+          <label class="appearance-field">
+            全局字号
+            <span class="range-row"><input id="scale-base" type="range" min="0.8" max="1.5" step="0.05" value="1"><output id="scale-base-value">1.00</output></span>
+          </label>
+          <label class="appearance-field">
+            背景色
+            <input id="color-bg" type="color" value="#f2ecdf">
+          </label>
+          <label class="appearance-field">
+            次背景色
+            <input id="color-bg2" type="color" value="#e7dcc8">
+          </label>
+          <label class="appearance-field">
+            主文字色
+            <input id="color-ink" type="color" value="#1d1a15">
+          </label>
+          <label class="appearance-field">
+            辅助文字色
+            <input id="color-muted" type="color" value="#6d6457">
+          </label>
+          <label class="appearance-field">
+            主题色
+            <input id="color-accent" type="color" value="#d4532d">
+          </label>
+          <label class="appearance-field">
+            强调色
+            <input id="color-accent2" type="color" value="#255c4b">
+          </label>
+          <label class="appearance-field">
+            标题字体
+            <select id="font-display"></select>
+          </label>
+          <label class="appearance-field">
+            正文字体
+            <select id="font-body"></select>
+          </label>
+          <label class="appearance-field">
+            等宽字体
+            <select id="font-mono"></select>
+          </label>
+          <label class="appearance-field">
+            标题字号
+            <span class="range-row"><input id="scale-title" type="range" min="0.8" max="1.4" step="0.05" value="1"><output id="scale-title-value">1.00</output></span>
+          </label>
+          <label class="appearance-field">
+            正文字号
+            <span class="range-row"><input id="scale-body" type="range" min="0.8" max="1.5" step="0.05" value="1"><output id="scale-body-value">1.00</output></span>
+          </label>
+          <label class="appearance-field">
+            标签字号
+            <span class="range-row"><input id="scale-kicker" type="range" min="0.8" max="1.5" step="0.05" value="1"><output id="scale-kicker-value">1.00</output></span>
+          </label>
+        </div>
+        <div class="json-actions">
+          <button class="btn" type="button" id="btn-apply-appearance">应用外观</button>
+          <button class="btn btn--ghost" type="button" id="btn-reset-appearance">重置</button>
+        </div>
+        <p class="note" style="margin-top:9px">字体只引用开源字体名称（Noto / 思源 / Inter / JetBrains Mono / 霞鹜文楷），不打包字体文件；未安装时自动回退系统字体。</p>
       </section>
 
       <section class="panel-section">

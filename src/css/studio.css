@@ -346,6 +346,70 @@ select {
   grid-column: 1 / -1;
 }
 
+.appearance-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.appearance-field {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  color: #7d8491;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.appearance-field--wide {
+  grid-column: 1 / -1;
+}
+
+.appearance-field select,
+.appearance-field input[type="color"] {
+  width: 100%;
+  height: 30px;
+  padding: 3px;
+  border: 1px solid #2c3038;
+  border-radius: 7px;
+  outline: none;
+  background: #0f1115;
+  color: #cfd3db;
+  font-size: 11px;
+}
+
+.appearance-field select:focus,
+.appearance-field input[type="color"]:focus {
+  border-color: #3f7f76;
+  box-shadow: 0 0 0 3px rgba(94, 234, 212, 0.08);
+}
+
+.appearance-field input[type="color"] {
+  cursor: pointer;
+}
+
+.range-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.range-row input[type="range"] {
+  flex: 1;
+  min-width: 0;
+  accent-color: #5eead4;
+}
+
+.range-row output {
+  min-width: 2.6em;
+  color: #9cf7e7;
+  font-family: "Cascadia Code", Consolas, monospace;
+  font-size: 9px;
+  letter-spacing: 0;
+  text-align: right;
+}
+
 .slide-list {
   display: grid;
   gap: 4px;
@@ -724,12 +788,30 @@ select {
 
   .studio-actions {
     width: 100%;
-    overflow: auto;
+    flex-wrap: wrap;
+    overflow: visible;
+  }
+
+  .studio-actions .btn {
+    flex: 1 1 auto;
+    padding: 0 10px;
+    font-size: 11px;
   }
 
   .studio-main {
-    display: block;
+    display: flex;
+    flex-direction: column;
     height: auto;
+  }
+
+  .studio-canvas {
+    order: -1;
+    min-height: 520px;
+    padding: 12px;
+  }
+
+  .studio-stage .deck__stage {
+    max-height: 58vh;
   }
 
   .studio-panel {
@@ -737,12 +819,29 @@ select {
     border-bottom: 1px solid #20232a;
   }
 
-  .studio-canvas {
-    min-height: 520px;
-    padding: 12px;
+  .panel-title {
+    font-size: 11px;
   }
 
-  .studio-stage .deck__stage {
-    max-height: 62vh;
+  .theme-card__name {
+    font-size: 13px;
+  }
+
+  .slide-item__title {
+    font-size: 12px;
+  }
+
+  .note,
+  .json-editor {
+    font-size: 12px;
+  }
+
+  .appearance-field {
+    font-size: 11px;
+  }
+
+  .appearance-field select,
+  .appearance-field input[type="color"] {
+    font-size: 12px;
   }
 }

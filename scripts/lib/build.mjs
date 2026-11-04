@@ -63,7 +63,10 @@ export function parseFormats(value) {
 export function withTheme(input, theme) {
   const deck = JSON.parse(JSON.stringify(input));
   deck.meta = deck.meta && typeof deck.meta === "object" ? deck.meta : {};
-  if (theme) deck.meta.theme = theme;
+  if (theme) {
+    deck.meta.theme = theme;
+    if (theme !== "custom") delete deck.appearance;
+  }
   return deck;
 }
 

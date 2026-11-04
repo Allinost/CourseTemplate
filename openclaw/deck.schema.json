@@ -25,7 +25,7 @@
         "language": { "type": "string", "default": "zh-CN" },
         "theme": {
           "type": "string",
-          "enum": ["editorial", "tech", "consulting", "ink"],
+          "enum": ["editorial", "tech", "consulting", "ink", "custom"],
           "default": "editorial",
           "description": "视觉主题。editorial=纸感杂志；tech=深空极客；consulting=咨询报告；ink=黑白宣言。"
         },
@@ -50,6 +50,53 @@
         }
       },
       "additionalProperties": true
+    },
+    "appearance": {
+      "type": "object",
+      "description": "自定义主题：覆盖预设配色、背景效果与字体字号。所有字段可选。",
+      "properties": {
+        "colors": {
+          "type": "object",
+          "properties": {
+            "bg": { "type": "string", "description": "背景色，支持 #hex / rgb() / hsl()。" },
+            "bg2": { "type": "string", "description": "次背景色，用于渐变。" },
+            "ink": { "type": "string", "description": "主文字色。" },
+            "muted": { "type": "string", "description": "辅助文字色。" },
+            "accent": { "type": "string", "description": "主题色。" },
+            "accent2": { "type": "string", "description": "强调色。" },
+            "panel": { "type": "string", "description": "卡片/面板底色。" },
+            "panelStrong": { "type": "string", "description": "强调面板底色。" },
+            "line": { "type": "string", "description": "分隔线颜色。" },
+            "lineStrong": { "type": "string", "description": "强分隔线颜色。" },
+            "faint": { "type": "string", "description": "弱化文字颜色。" },
+            "titleColor": { "type": "string", "description": "标题颜色；缺省使用 ink。" },
+            "bodyColor": { "type": "string", "description": "正文颜色；缺省使用 muted。" }
+          },
+          "additionalProperties": false
+        },
+        "background": {
+          "type": "object",
+          "properties": {
+            "type": { "type": "string", "enum": ["none", "gradient", "mesh", "grid", "dots", "glass"] },
+            "angle": { "type": "number", "minimum": 0, "maximum": 360, "default": 135 }
+          },
+          "additionalProperties": false
+        },
+        "typography": {
+          "type": "object",
+          "properties": {
+            "displayFont": { "type": "string", "description": "标题字体族，例如 \"Noto Serif SC\", serif。" },
+            "bodyFont": { "type": "string", "description": "正文字体族。" },
+            "monoFont": { "type": "string", "description": "标签/页脚等宽字体族。" },
+            "baseScale": { "type": "number", "minimum": 0.7, "maximum": 1.8, "default": 1 },
+            "titleScale": { "type": "number", "minimum": 0.7, "maximum": 1.6, "default": 1 },
+            "bodyScale": { "type": "number", "minimum": 0.7, "maximum": 1.8, "default": 1 },
+            "kickerScale": { "type": "number", "minimum": 0.7, "maximum": 1.8, "default": 1 }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     },
     "slides": {
       "type": "array",

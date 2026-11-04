@@ -8,7 +8,7 @@
  * It never touches the DOM. All user content is escaped before interpolation.
  */
 
-export const VERSION = "1.0.0";
+export const VERSION = "1.1.0";
 
 export const THEMES = [
   {
@@ -18,6 +18,7 @@ export const THEMES = [
     description: "暖纸底色、衬线大标题、陶土红与墨绿。适合课程、文化、品牌叙事。",
     accent: "#d4532d",
     bg: "#f2ecdf",
+    palette: { bg: "#f2ecdf", bg2: "#e7dcc8", ink: "#1d1a15", muted: "#6d6457", accent: "#d4532d", accent2: "#255c4b" },
   },
   {
     id: "tech",
@@ -26,6 +27,7 @@ export const THEMES = [
     description: "深空蓝、青色辉光、网格与扫描线。适合技术分享、产品发布、B 站科普。",
     accent: "#5eead4",
     bg: "#070d17",
+    palette: { bg: "#070d17", bg2: "#040811", ink: "#eaf2ff", muted: "#8ca1bb", accent: "#5eead4", accent2: "#a3e635" },
   },
   {
     id: "consulting",
@@ -34,6 +36,7 @@ export const THEMES = [
     description: "冷白底、结构线、蓝色主色与琥珀强调。适合研究报告、商业提案、数据复盘。",
     accent: "#1d4ed8",
     bg: "#f7f8fa",
+    palette: { bg: "#f7f8fa", bg2: "#e8edf4", ink: "#101827", muted: "#64748b", accent: "#1d4ed8", accent2: "#f59e0b" },
   },
   {
     id: "ink",
@@ -42,7 +45,36 @@ export const THEMES = [
     description: "高对比黑底、巨型描边字、朱红强调。适合观点输出、发布会、极简演讲。",
     accent: "#ff4d2e",
     bg: "#121110",
+    palette: { bg: "#121110", bg2: "#090808", ink: "#f3efe6", muted: "#a29b8e", accent: "#ff4d2e", accent2: "#d8c9a7" },
   },
+  {
+    id: "custom",
+    name: "自定义",
+    en: "Custom",
+    description: "从任意配色、背景效果与字体组合开始，适合品牌 VI 与商业项目。",
+    accent: "#2563eb",
+    bg: "#f4f4f5",
+    palette: { bg: "#f4f4f5", bg2: "#e4e4e7", ink: "#18181b", muted: "#52525b", accent: "#2563eb", accent2: "#f59e0b" },
+  },
+];
+
+export const BACKGROUND_EFFECTS = [
+  { id: "none", label: "纯色" },
+  { id: "gradient", label: "渐变" },
+  { id: "mesh", label: "柔光" },
+  { id: "grid", label: "网格" },
+  { id: "dots", label: "点阵" },
+  { id: "glass", label: "磨砂玻璃" },
+];
+
+export const FONT_OPTIONS = [
+  { id: "sans", label: "无衬线 / Noto Sans SC", value: '"Inter", "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif' },
+  { id: "serif", label: "衬线 / Noto Serif SC", value: '"Noto Serif SC", "Source Han Serif SC", "LXGW WenKai", "Songti SC", "STSong", serif' },
+  { id: "source-sans", label: "思源黑体 / Source Han Sans SC", value: '"Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif' },
+  { id: "source-serif", label: "思源宋体 / Source Han Serif SC", value: '"Source Han Serif SC", "Noto Serif SC", "Songti SC", serif' },
+  { id: "inter", label: "Inter / 西文", value: '"Inter", "Segoe UI", sans-serif' },
+  { id: "mono", label: "等宽 / JetBrains Mono", value: '"JetBrains Mono", "Cascadia Code", "Consolas", monospace' },
+  { id: "wenkai", label: "霞鹜文楷 / LXGW WenKai", value: '"LXGW WenKai", "KaiTi", "STKaiti", serif' },
 ];
 
 export const RATIOS = {
@@ -117,6 +149,118 @@ const VISUALS = new Set(["grid", "orbit", "bars", "rings", "type"]);
 
 const LAYOUT_IDS = new Set(LAYOUTS.map((item) => item.id));
 const THEME_IDS = new Set(THEMES.map((item) => item.id));
+const BG_IDS = new Set(BACKGROUND_EFFECTS.map((item) => item.id));
+const COLOR_KEYS = ["bg", "bg2", "ink", "muted", "accent", "accent2", "panel", "panelStrong", "line", "lineStrong", "faint", "titleColor", "bodyColor"];
+const TYPO_KEYS = ["displayFont", "bodyFont", "monoFont", "baseScale", "titleScale", "bodyScale", "kickerScale"];
+
+function safeColor(value) {
+  const color = String(value ?? "").trim();
+  if (/^#[0-9a-f]{3,8}$/i.test(color)) return color;
+  if (/^(rgb|rgba|hsl|hsla)\(\s*[\d.,%\s/+-]+\)$/i.test(color)) return color;
+  return "";
+}
+
+function safeFont(value) {
+  const font = String(value ?? "").trim();
+  if (!font || font.length > 160) return "";
+  if (/[;{}<>]/.test(font)) return "";
+  if (!/^[\w\s,'"\-.\u4e00-\u9fa5]+$/u.test(font)) return "";
+  return font;
+}
+
+function clampNumber(value, fallback, min, max) {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) return fallback;
+  return Math.min(max, Math.max(min, parsed));
+}
+
+function contrastInk(value) {
+  const color = safeColor(value);
+  if (!/^#[0-9a-f]{6}$/i.test(color)) return "";
+  const r = parseInt(color.slice(1, 3), 16);
+  const g = parseInt(color.slice(3, 5), 16);
+  const b = parseInt(color.slice(5, 7), 16);
+  return (r * 299 + g * 587 + b * 114) / 1000 > 150 ? "#111827" : "#ffffff";
+}
+
+export function normalizeAppearance(input = {}) {
+  const source = input && typeof input === "object" ? input : {};
+  const colorInput = source.colors && typeof source.colors === "object" ? source.colors : {};
+  const colors = {};
+  for (const key of COLOR_KEYS) {
+    const value = safeColor(colorInput[key] ?? source[key]);
+    if (value) colors[key] = value;
+  }
+  if (colors.accent && !colors.accentInk) colors.accentInk = contrastInk(colors.accent);
+  if (colors.accent2 && !colors.accent2Ink) colors.accent2Ink = contrastInk(colors.accent2);
+
+  const bgInput = source.background && typeof source.background === "object" ? source.background : {};
+  const background = {
+    type: BG_IDS.has(bgInput.type) ? bgInput.type : "",
+    angle: clampNumber(bgInput.angle, 135, 0, 360),
+  };
+
+  const typeInput = source.typography && typeof source.typography === "object" ? source.typography : {};
+  const typography = {
+    displayFont: safeFont(typeInput.displayFont),
+    bodyFont: safeFont(typeInput.bodyFont),
+    monoFont: safeFont(typeInput.monoFont),
+    baseScale: clampNumber(typeInput.baseScale, 1, 0.7, 1.8),
+    titleScale: clampNumber(typeInput.titleScale, 1, 0.7, 1.6),
+    bodyScale: clampNumber(typeInput.bodyScale, 1, 0.7, 1.8),
+    kickerScale: clampNumber(typeInput.kickerScale, 1, 0.7, 1.8),
+  };
+
+  return { colors, background, typography };
+}
+
+export function appearanceStyle(input = {}) {
+  const appearance = normalizeAppearance(input);
+  const declarations = [];
+  const colorMap = {
+    bg: "--bg",
+    bg2: "--bg-2",
+    ink: "--ink",
+    muted: "--muted",
+    accent: "--accent",
+    accent2: "--accent-2",
+    panel: "--panel",
+    panelStrong: "--panel-strong",
+    line: "--line",
+    lineStrong: "--line-strong",
+    faint: "--faint",
+    titleColor: "--title-color",
+    bodyColor: "--body-color",
+    accentInk: "--accent-ink",
+    accent2Ink: "--accent-2-ink",
+  };
+  for (const [key, variable] of Object.entries(colorMap)) {
+    if (appearance.colors[key]) declarations.push(`${variable}:${appearance.colors[key]}`);
+  }
+  if (appearance.colors.ink) {
+    if (!appearance.colors.line) declarations.push("--line:color-mix(in srgb, var(--ink) 15%, transparent)");
+    if (!appearance.colors.lineStrong) declarations.push("--line-strong:color-mix(in srgb, var(--ink) 30%, transparent)");
+    if (!appearance.colors.panel) declarations.push("--panel:color-mix(in srgb, var(--ink) 5%, transparent)");
+    if (!appearance.colors.panelStrong) declarations.push("--panel-strong:color-mix(in srgb, var(--ink) 9%, transparent)");
+    declarations.push("--chip:color-mix(in srgb, var(--ink) 7%, transparent)");
+    declarations.push("--faint:color-mix(in srgb, var(--ink) 48%, transparent)");
+    declarations.push("--ink-soft:color-mix(in srgb, var(--ink) 88%, var(--bg))");
+  }
+  if (appearance.colors.bg && !appearance.colors.bg2) declarations.push("--bg-2:var(--bg)");
+  if (appearance.background.type) declarations.push(`--bg-angle:${appearance.background.angle}deg`);
+  if (appearance.typography.displayFont) declarations.push(`--display:${appearance.typography.displayFont}`);
+  if (appearance.typography.bodyFont) declarations.push(`--body:${appearance.typography.bodyFont}`);
+  if (appearance.typography.monoFont) declarations.push(`--mono:${appearance.typography.monoFont}`);
+  if (appearance.typography.baseScale !== 1) declarations.push(`--type-scale:${appearance.typography.baseScale}`);
+  if (appearance.typography.titleScale !== 1) declarations.push(`--title-scale:${appearance.typography.titleScale}`);
+  if (appearance.typography.bodyScale !== 1) declarations.push(`--body-scale:${appearance.typography.bodyScale}`);
+  if (appearance.typography.kickerScale !== 1) declarations.push(`--kicker-scale:${appearance.typography.kickerScale}`);
+  return declarations.join(";");
+}
+
+export function backgroundEffect(input = {}) {
+  return normalizeAppearance(input).background.type;
+}
 
 /* --------------------------------------------------------------------------
    Text helpers
@@ -237,6 +381,7 @@ export function normalizeDeck(input = {}) {
     }));
 
   const closingInput = source.closing && typeof source.closing === "object" ? source.closing : null;
+  const appearance = normalizeAppearance(source.appearance ?? metaInput.appearance ?? {});
 
   return {
     schemaVersion: source.schemaVersion || "1.0",
@@ -244,6 +389,7 @@ export function normalizeDeck(input = {}) {
     cover,
     slides,
     closing: closingInput,
+    appearance,
   };
 }
 
@@ -719,6 +865,8 @@ export function renderCoverOnly(input, ratio = "4:3") {
     ratio: ratioMeta,
     slides,
     total: 1,
+    style: appearanceStyle(deck.appearance),
+    bgEffect: backgroundEffect(deck.appearance),
   };
 }
 
@@ -746,6 +894,8 @@ export function renderDeckSlides(input, ratio = "16:9") {
     ratio: ratioMeta,
     slides,
     total,
+    style: appearanceStyle(deck.appearance),
+    bgEffect: backgroundEffect(deck.appearance),
   };
 }
 

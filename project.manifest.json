@@ -1,6 +1,7 @@
 {
   "project_key": "html-ppt-template",
   "name": "HTML PPT Template",
+  "version": "1.1.0",
   "type": "template",
   "description": "零依赖、带动画的 HTML PPT 模板组。一份内容 JSON 可自适应导出 16:9 横版内容、4:3 横版封面、3:4 竖版封面、3:5 竖版内容，并提供 OpenClaw CLI/HTTP 调用协议。",
   "repo_url": "https://github.com/Allinost/CourseTemplate",

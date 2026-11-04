@@ -3,9 +3,13 @@
  */
 
 import {
+  BACKGROUND_EFFECTS,
+  FONT_OPTIONS,
   LAYOUTS,
   RATIOS,
   THEMES,
+  appearanceStyle,
+  normalizeAppearance,
   normalizeDeck,
   renderChrome,
   renderCoverOnly,
@@ -19,6 +23,7 @@ const INK = {
   tech: "#eaf2ff",
   consulting: "#101827",
   ink: "#f3efe6",
+  custom: "#18181b",
 };
 
 const FALLBACK_DECK = {
@@ -52,7 +57,8 @@ const FALLBACK_DECK = {
 const state = {
   deck: null,
   theme: "editorial",
-  ratio: "16:9",
+  baseTheme: "editorial",
+  ratio: "auto",
   api: null,
   lastExport: null,
 };
@@ -63,6 +69,30 @@ function cacheDom() {
   const ids = [
     "theme-list",
     "ratio-list",
+    "appearance-status",
+    "appearance-grid",
+    "bg-effect",
+    "bg-angle",
+    "bg-angle-value",
+    "color-bg",
+    "color-bg2",
+    "color-ink",
+    "color-muted",
+    "color-accent",
+    "color-accent2",
+    "font-display",
+    "font-body",
+    "font-mono",
+    "scale-base",
+    "scale-base-value",
+    "scale-title",
+    "scale-title-value",
+    "scale-body",
+    "scale-body-value",
+    "scale-kicker",
+    "scale-kicker-value",
+    "btn-apply-appearance",
+    "btn-reset-appearance",
     "slide-list",
     "slide-count",
     "ratio-status",
@@ -124,28 +154,158 @@ function themeMeta(id) {
   return THEMES.find((theme) => theme.id === id) || THEMES[0];
 }
 
+function paletteFor(id) {
+  return { ...themeMeta(id).palette };
+}
+
+function populateAppearanceOptions() {
+  dom["bg-effect"].innerHTML = BACKGROUND_EFFECTS.map(
+    (effect) => `<option value="${effect.id}">${effect.label}</option>`,
+  ).join("");
+  const fontOptions = FONT_OPTIONS.map(
+    (font) => `<option value="${escapeText(font.value)}">${font.label}</option>`,
+  ).join("");
+  for (const id of ["font-display", "font-body", "font-mono"]) {
+    dom[id].innerHTML = `<option value="">跟随主题</option>${fontOptions}`;
+  }
+}
+
+function colorValue(value, fallback) {
+  return /^#[0-9a-f]{6}$/i.test(String(value || "")) ? value : fallback;
+}
+
+function setFontSelect(id, value) {
+  const select = dom[id];
+  if (value && ![...select.options].some((option) => option.value === value)) {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = "自定义字体";
+    select.appendChild(option);
+  }
+  select.value = value || "";
+}
+
+function syncAppearanceControls() {
+  if (!state.deck) return;
+  const appearance = normalizeAppearance(state.deck.appearance);
+  const palette = paletteFor(state.baseTheme || state.theme);
+  const colors = { ...palette, ...appearance.colors };
+  dom["appearance-status"].textContent = state.theme === "custom" ? "custom" : "preset";
+  dom["bg-effect"].value = appearance.background.type || "none";
+  dom["bg-angle"].value = String(appearance.background.angle);
+  dom["bg-angle-value"].textContent = `${appearance.background.angle}°`;
+  const colorMap = {
+    "color-bg": "bg",
+    "color-bg2": "bg2",
+    "color-ink": "ink",
+    "color-muted": "muted",
+    "color-accent": "accent",
+    "color-accent2": "accent2",
+  };
+  for (const [id, key] of Object.entries(colorMap)) {
+    dom[id].value = colorValue(colors[key], palette[key] || "#ffffff");
+  }
+  setFontSelect("font-display", appearance.typography.displayFont);
+  setFontSelect("font-body", appearance.typography.bodyFont);
+  setFontSelect("font-mono", appearance.typography.monoFont);
+  const scaleMap = {
+    "scale-base": "baseScale",
+    "scale-title": "titleScale",
+    "scale-body": "bodyScale",
+    "scale-kicker": "kickerScale",
+  };
+  for (const [id, key] of Object.entries(scaleMap)) {
+    const value = appearance.typography[key];
+    dom[id].value = String(value);
+    dom[`${id}-value`].textContent = Number(value).toFixed(2);
+  }
+}
+
+function applyAppearance() {
+  if (!state.deck) return;
+  const previous = normalizeAppearance(state.deck.appearance);
+  const colors = {
+    ...previous.colors,
+    bg: dom["color-bg"].value,
+    bg2: dom["color-bg2"].value,
+    ink: dom["color-ink"].value,
+    muted: dom["color-muted"].value,
+    accent: dom["color-accent"].value,
+    accent2: dom["color-accent2"].value,
+  };
+  state.deck.meta = state.deck.meta && typeof state.deck.meta === "object" ? state.deck.meta : {};
+  if (state.theme !== "custom") state.baseTheme = state.theme;
+  state.deck.appearance = {
+    colors,
+    background: {
+      type: dom["bg-effect"].value,
+      angle: Number(dom["bg-angle"].value),
+    },
+    typography: {
+      displayFont: dom["font-display"].value,
+      bodyFont: dom["font-body"].value,
+      monoFont: dom["font-mono"].value,
+      baseScale: Number(dom["scale-base"].value),
+      titleScale: Number(dom["scale-title"].value),
+      bodyScale: Number(dom["scale-body"].value),
+      kickerScale: Number(dom["scale-kicker"].value),
+    },
+  };
+  state.deck.meta.theme = "custom";
+  state.theme = "custom";
+  renderThemeList();
+  renderPreview();
+  syncJson();
+  toast("已应用自定义外观");
+}
+
+function resetAppearance() {
+  if (!state.deck) return;
+  delete state.deck.appearance;
+  state.deck.meta = state.deck.meta && typeof state.deck.meta === "object" ? state.deck.meta : {};
+  state.deck.meta.theme = state.baseTheme || "editorial";
+  state.theme = state.deck.meta.theme;
+  renderThemeList();
+  renderPreview();
+  syncJson();
+  toast("已恢复预设主题");
+}
+
 function renderThemeList() {
-  dom["theme-list"].innerHTML = THEMES.map(
-    (theme) => `<button class="theme-card" type="button" data-theme="${theme.id}" aria-pressed="${theme.id === state.theme}">
-      <span class="theme-swatch" style="--theme-bg:${theme.bg};--theme-accent:${theme.accent};--theme-ink:${INK[theme.id] || "#fff"}" aria-hidden="true"></span>
+  dom["theme-list"].innerHTML = THEMES.map((theme) => {
+    const palette = theme.palette || { bg: theme.bg, ink: INK[theme.id] || "#fff", accent: theme.accent };
+    return `<button class="theme-card" type="button" data-theme="${theme.id}" aria-pressed="${theme.id === state.theme}">
+      <span class="theme-swatch" style="--theme-bg:${palette.bg};--theme-accent:${palette.accent};--theme-ink:${palette.ink}" aria-hidden="true"></span>
       <span class="theme-card__text">
         <span class="theme-card__name">${theme.name}</span>
         <span class="theme-card__en">${theme.en}</span>
       </span>
-    </button>`,
-  ).join("");
+    </button>`;
+  }).join("");
   dom["theme-list"].querySelectorAll("[data-theme]").forEach((button) => {
     button.addEventListener("click", () => {
       const theme = button.dataset.theme;
       if (!THEMES.some((item) => item.id === theme)) return;
-      state.theme = theme;
-      if (state.deck) {
-        state.deck.meta = state.deck.meta && typeof state.deck.meta === "object" ? state.deck.meta : {};
-        state.deck.meta.theme = theme;
-        renderPreview();
-        syncJson();
+      if (!state.deck) return;
+      state.deck.meta = state.deck.meta && typeof state.deck.meta === "object" ? state.deck.meta : {};
+      if (theme === "custom") {
+        if (state.theme !== "custom") state.baseTheme = state.theme;
+        if (!state.deck.appearance?.colors || !Object.keys(state.deck.appearance.colors).length) {
+          state.deck.appearance = {
+            colors: paletteFor(state.baseTheme),
+            background: { type: "gradient", angle: 135 },
+            typography: {},
+          };
+        }
+      } else {
+        state.baseTheme = theme;
+        delete state.deck.appearance;
       }
+      state.deck.meta.theme = theme;
+      state.theme = theme;
       renderThemeList();
+      renderPreview();
+      syncJson();
     });
   });
 }
@@ -230,7 +390,9 @@ function renderPreview() {
   }
 
   const result = isCover ? renderCoverOnly(state.deck, ratio) : renderDeckSlides(state.deck, ratio);
-  dom.stage.innerHTML = `<div class="deck deck--studio" data-deck data-ratio="${ratio}" data-theme="${state.theme}" data-kind="${meta.kind}" data-deck-auto="false">
+  const styleAttribute = result.style ? ` style="${escapeText(result.style)}"` : "";
+  const backgroundAttribute = result.bgEffect ? ` data-bg-effect="${escapeText(result.bgEffect)}"` : "";
+  dom.stage.innerHTML = `<div class="deck deck--studio" data-deck data-ratio="${ratio}" data-theme="${state.theme}" data-kind="${meta.kind}" data-deck-auto="false"${styleAttribute}${backgroundAttribute}>
     <div class="deck__stage">
       ${result.slides.join("\n")}
     </div>
@@ -257,6 +419,7 @@ function renderPreview() {
     dom["btn-prev"].disabled = true;
     dom["btn-next"].disabled = true;
   }
+  syncAppearanceControls();
 }
 
 function syncJson() {
@@ -283,6 +446,7 @@ function applyDeck(deck, options = {}) {
   }
   state.deck = deck;
   state.theme = normalizeDeck(deck).meta.theme;
+  if (state.theme !== "custom") state.baseTheme = state.theme;
   renderThemeList();
   renderPreview();
   if (options.syncJson !== false) syncJson();
@@ -418,6 +582,8 @@ function bindEvents() {
   dom["btn-next"].addEventListener("click", () => state.api && state.api.next());
   dom["btn-demo"].addEventListener("click", loadDemo);
   dom["btn-download"].addEventListener("click", downloadJson);
+  dom["btn-apply-appearance"].addEventListener("click", applyAppearance);
+  dom["btn-reset-appearance"].addEventListener("click", resetAppearance);
   dom["btn-export"].addEventListener("click", exportDeck);
   dom["btn-copy-cmd"].addEventListener("click", copyCommand);
 
@@ -444,6 +610,21 @@ function bindEvents() {
     dom["json-status"].textContent = "dirty";
   });
 
+  const rangeOutputs = {
+    "bg-angle": "bg-angle-value",
+    "scale-base": "scale-base-value",
+    "scale-title": "scale-title-value",
+    "scale-body": "scale-body-value",
+    "scale-kicker": "scale-kicker-value",
+  };
+  for (const [inputId, outputId] of Object.entries(rangeOutputs)) {
+    const input = dom[inputId];
+    const output = dom[outputId];
+    input.addEventListener("input", () => {
+      output.textContent = inputId === "bg-angle" ? `${input.value}°` : Number(input.value).toFixed(2);
+    });
+  }
+
   window.matchMedia("(orientation: portrait)").addEventListener("change", () => {
     if (state.ratio === "auto") {
       renderPreview();
@@ -454,6 +635,7 @@ function bindEvents() {
 
 async function init() {
   cacheDom();
+  populateAppearanceOptions();
   renderThemeList();
   bindEvents();
   updateRatioButtons();

@@ -3,11 +3,12 @@
  * Errors block export; warnings are reported to the caller (OpenClaw or CLI).
  */
 
-import { LAYOUTS, RATIOS, THEMES, normalizeDeck } from "../../src/js/render.js";
+import { BACKGROUND_EFFECTS, LAYOUTS, RATIOS, THEMES, normalizeDeck } from "../../src/js/render.js";
 
 const LAYOUT_IDS = new Set(LAYOUTS.map((layout) => layout.id));
 const THEME_IDS = new Set(THEMES.map((theme) => theme.id));
 const RATIO_IDS = new Set(Object.keys(RATIOS));
+const BG_IDS = new Set(BACKGROUND_EFFECTS.map((effect) => effect.id));
 
 function isObject(value) {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -163,6 +164,32 @@ export function validateDeck(input) {
 
   if (input.cover !== undefined && !isObject(input.cover)) {
     errors.push({ path: "$.cover", message: "cover 必须是对象。" });
+  }
+
+  if (input.appearance !== undefined) {
+    if (!isObject(input.appearance)) {
+      errors.push({ path: "$.appearance", message: "appearance 必须是对象。" });
+    } else {
+      const bg = input.appearance.background;
+      if (bg !== undefined) {
+        if (!isObject(bg)) {
+          errors.push({ path: "$.appearance.background", message: "background 必须是对象。" });
+        } else if (bg.type !== undefined && !BG_IDS.has(bg.type)) {
+          warnings.push({
+            path: "$.appearance.background.type",
+            message: `未知背景效果 "${bg.type}"，将回退为预设背景。可选：${[...BG_IDS].join(", ")}。`,
+          });
+        }
+      }
+      const typography = input.appearance.typography;
+      if (typography !== undefined && !isObject(typography)) {
+        errors.push({ path: "$.appearance.typography", message: "typography 必须是对象。" });
+      }
+      const colors = input.appearance.colors;
+      if (colors !== undefined && !isObject(colors)) {
+        errors.push({ path: "$.appearance.colors", message: "colors 必须是对象。" });
+      }
+    }
   }
 
   const normalized = normalizeDeck(input);

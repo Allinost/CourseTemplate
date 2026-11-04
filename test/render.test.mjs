@@ -162,9 +162,56 @@ test("standalone document embeds CSS, runtime and a print page size", async () =
 });
 
 test("all themes are declared", () => {
-  assert.equal(THEMES.length, 4);
+  assert.equal(THEMES.length, 5);
   assert.deepEqual(
     THEMES.map((theme) => theme.id),
-    ["editorial", "tech", "consulting", "ink"],
+    ["editorial", "tech", "consulting", "ink", "custom"],
   );
+});
+
+test("custom appearance produces safe inline tokens", () => {
+  const result = renderDeckSlides(
+    {
+      meta: { title: "Custom", theme: "custom" },
+      appearance: {
+        colors: { bg: "#101820", bg2: "#1e293b", ink: "#f8fafc", muted: "#94a3b8", accent: "#f97316", accent2: "#22d3ee" },
+        background: { type: "glass", angle: 160 },
+        typography: {
+          displayFont: '"Noto Serif SC", serif',
+          bodyFont: '"Noto Sans SC", sans-serif',
+          baseScale: 1.1,
+          titleScale: 1.05,
+          bodyScale: 1.2,
+          kickerScale: 1.1,
+        },
+      },
+      slides: [{ layout: "statement", title: "自定义主题" }],
+    },
+    "16:9",
+  );
+  assert.equal(result.bgEffect, "glass");
+  assert.match(result.style, /--accent:#f97316/);
+  assert.match(result.style, /--display:&quot;|--display:"Noto Serif SC"/);
+  assert.match(result.style, /--type-scale:1.1/);
+  assert.match(result.style, /--bg-angle:160deg/);
+  assert.equal(result.deck.meta.theme, "custom");
+});
+
+test("invalid appearance values are dropped by normalization", () => {
+  const result = renderCoverOnly(
+    {
+      meta: { title: "Unsafe" },
+      appearance: {
+        colors: { bg: "javascript:alert(1)", accent: "red; background:url(x)" },
+        background: { type: "gradient", angle: 999 },
+        typography: { displayFont: 'x; } body { background:red', baseScale: 99 },
+      },
+      slides: [],
+    },
+    "4:3",
+  );
+  assert.equal(result.bgEffect, "gradient");
+  assert.doesNotMatch(result.style, /javascript|background:url|evil/);
+  assert.match(result.style, /--bg-angle:360deg/);
+  assert.match(result.style, /--type-scale:1.8/);
 });

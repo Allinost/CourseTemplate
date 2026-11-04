@@ -135,7 +135,7 @@ node scripts/openclaw.mjs render \
 ```json
 {
   "template": "html-ppt-template",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "generatedAt": "...",
   "slug": "my-deck",
   "theme": "editorial",
@@ -183,6 +183,8 @@ curl -X POST http://127.0.0.1:4173/api/openclaw/render \
 ```
 
 响应为 `render` 的同一 JSON 结构，`outDir` 为相对仓库根的 `exports/...`。
+
+自定义主题：在 `deck.meta.theme` 设为 `custom`，并在 `deck.appearance` 传颜色、背景效果与字体字号；`theme` 请求参数可覆盖为预设主题，覆盖为非 `custom` 主题时会清空 `appearance`。字段见 [`02-content-model.md`](02-content-model.md#4-appearance-自定义外观)。
 
 ### 3.2 预览请求
 

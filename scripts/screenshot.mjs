@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 /**
- * Optional PNG export through a locally installed Chrome/Edge (no npm deps).
+ * PNG export through one persistent headless Chrome session.
+ * All slides reuse the same page target, so no new window per slide.
  *
  *   node scripts/screenshot.mjs --html exports/demo/deck-16x9.html --all
  *   node scripts/screenshot.mjs --html exports/demo/cover-3x4.html --slide 1 --out preview/cover.png
  */
 
-import { mkdir, mkdtemp, readFile, rm, stat } from "node:fs/promises";
-import { spawnSync } from "node:child_process";
-import { setTimeout as delay } from "node:timers/promises";
-import { tmpdir } from "node:os";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { readFile } from "node:fs/promises";
+import { pathToFileURL } from "node:url";
 import path from "node:path";
+
+import { createBrowser, findChrome } from "./lib/browser.mjs";
 
 const RATIO_SIZE = {
   "16:9": [1600, 900],
@@ -25,7 +25,7 @@ function parseArgs(argv) {
   for (let i = 0; i < argv.length; i += 1) {
     if (!argv[i].startsWith("--")) continue;
     const key = argv[i].slice(2);
-    if (key === "all") {
+    if (key === "all" || key === "quiet") {
       args[key] = true;
       continue;
     }
@@ -33,32 +33,6 @@ function parseArgs(argv) {
     i += 1;
   }
   return args;
-}
-
-function findChrome(explicit) {
-  const candidates = [
-    explicit,
-    process.env.CHROME_PATH,
-    "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
-    "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
-    path.join(process.env.LOCALAPPDATA || "", "Google\\Chrome\\Application\\chrome.exe"),
-    "C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe",
-    "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
-    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-    "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
-    "/usr/bin/google-chrome",
-    "/usr/bin/chromium",
-    "/usr/bin/chromium-browser",
-    "/usr/bin/microsoft-edge",
-  ].filter(Boolean);
-  for (const candidate of candidates) {
-    try {
-      if (spawnSync(candidate, ["--version"], { windowsHide: true }).status === 0) return candidate;
-    } catch (_error) {
-      /* keep looking */
-    }
-  }
-  return null;
 }
 
 function countSlides(html) {
@@ -91,10 +65,8 @@ async function main() {
     ? path.resolve(args.out)
     : path.resolve("preview", `${path.basename(htmlPath, ".html")}-${ratio.replace(":", "x")}`);
   const isSingleFile = !args.all;
-  if (!isSingleFile) await mkdir(outBase, { recursive: true });
-
   const slides = args.all ? Array.from({ length: total }, (_, index) => index + 1) : [Number(args.slide || 1)];
-  const profile = await mkdtemp(path.join(tmpdir(), "htmlppt-chrome-"));
+  const browser = await createBrowser({ chrome });
   const results = [];
 
   try {
@@ -104,48 +76,15 @@ async function main() {
           ? outBase
           : `${outBase}.png`
         : path.join(outBase, `slide-${String(slide).padStart(2, "0")}.png`);
-      await mkdir(path.dirname(output), { recursive: true });
       const url = `${pathToFileURL(htmlPath).href}?export=1&slide=${slide}`;
-      const slideProfile = path.join(profile, `run-${slide}`);
-      await mkdir(slideProfile, { recursive: true });
-      const run = spawnSync(
-        chrome,
-        [
-          "--headless=new",
-          "--disable-gpu",
-          "--no-sandbox",
-          "--disable-dev-shm-usage",
-          "--hide-scrollbars",
-          "--force-device-scale-factor=1",
-          `--user-data-dir=${slideProfile}`,
-          `--window-size=${width},${height}`,
-          `--screenshot=${output}`,
-          "--virtual-time-budget=2500",
-          url,
-        ],
-        { windowsHide: true, encoding: "utf8" },
-      );
-      let ready = false;
-      for (let attempt = 0; attempt < 40; attempt += 1) {
-        try {
-          const info = await stat(output);
-          if (info.size > 0) {
-            ready = true;
-            break;
-          }
-        } catch (_error) {
-          /* Chrome may fork and write the screenshot after the launcher exits */
-        }
-        await delay(250);
+      const result = await browser.capture({ url, width, height, output });
+      results.push({ slide, ...result });
+      if (!args.quiet) {
+        console.log(`  slide ${String(slide).padStart(2, "0")} -> ${path.relative(process.cwd(), output)}`);
       }
-      if (!ready) {
-        throw new Error(`截图失败（slide ${slide}）：${run.stderr || run.stdout || "Chrome 未生成文件"}`);
-      }
-      results.push({ slide, file: output, width, height });
-      if (!args.quiet) console.log(`  slide ${String(slide).padStart(2, "0")} -> ${path.relative(process.cwd(), output)}`);
     }
   } finally {
-    await rm(profile, { recursive: true, force: true }).catch(() => {});
+    await browser.close();
   }
 
   console.log(

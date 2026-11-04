@@ -125,6 +125,16 @@
 - `consulting`：柱状图、细圆环、报告标签；
 - `ink`：朱红圆盘、巨型描边编号、竖线。
 
+### 4.1 自定义外观
+
+`appearance` 在主题 Token 之上叠加：
+
+- `colors`：背景、主文字、辅助文字、主题色、强调色、面板/分隔线，以及标题/正文独立颜色；
+- `background`：纯色、渐变、柔光、网格、点阵、磨砂玻璃；
+- `typography`：标题/正文/等宽字体族、全局/标题/正文/标签字号倍率。
+
+渲染器把 `appearance` 转成内联 CSS 变量（`--bg`、`--accent`、`--display`、`--type-scale`、`--bg-angle` 等），不生成新的 HTML 结构；Studio 只负责编辑这些变量。实现见 `appearanceStyle()`。
+
 ## 5. 动效架构
 
 | 层级 | 实现 | 导出行为 |

@@ -1,7 +1,7 @@
 ---
 name: html-ppt-template
 description: Generate animated HTML presentations from one JSON model; exports 16:9 content, 4:3 cover, 3:4 cover and 3:5 portrait content.
-version: 1.0.0
+version: 1.1.0
 ---
 
 # HTML PPT Template

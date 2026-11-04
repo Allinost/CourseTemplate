@@ -32,10 +32,14 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+body.is-standalone {
+  background: var(--bg);
+}
+
 :root {
-  --font-sans: "Inter", "SF Pro Text", "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-  --font-serif: "Iowan Old Style", "Palatino Linotype", "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", serif;
-  --font-mono: "SFMono-Regular", "Cascadia Code", "JetBrains Mono", "Fira Code", "Consolas", monospace;
+  --font-sans: "Inter", "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-serif: "Noto Serif SC", "Source Han Serif SC", "LXGW WenKai", "Songti SC", "STSong", "Palatino Linotype", serif;
+  --font-mono: "JetBrains Mono", "Cascadia Code", "SFMono-Regular", "Consolas", monospace;
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
@@ -150,6 +154,32 @@ body {
   color-scheme: dark;
 }
 
+/* Neutral base for fully custom palettes. All values can be overridden inline. */
+[data-theme="custom"] {
+  --bg: #f4f4f5;
+  --bg-deep: #e4e4e7;
+  --bg-soft: #ffffff;
+  --ink: #18181b;
+  --ink-soft: #27272a;
+  --muted: #52525b;
+  --faint: #a1a1aa;
+  --accent: #2563eb;
+  --accent-ink: #ffffff;
+  --accent-2: #f59e0b;
+  --accent-2-ink: #1c1205;
+  --line: rgba(24, 24, 27, 0.14);
+  --line-strong: rgba(24, 24, 27, 0.28);
+  --panel: rgba(24, 24, 27, 0.04);
+  --panel-strong: rgba(37, 99, 235, 0.09);
+  --chip: rgba(24, 24, 27, 0.06);
+  --display: var(--font-sans);
+  --body: var(--font-sans);
+  --mono: var(--font-mono);
+  --shadow: 0 2cqw 6cqw rgba(16, 24, 39, 0.12);
+  --grain: 0.025;
+  color-scheme: light;
+}
+
 /* --------------------------------------------------------------------------
    Ratio contracts. The same slide markup is laid out with container units.
    -------------------------------------------------------------------------- */
@@ -160,7 +190,9 @@ body {
   --export-h: 900;
   --pad-x: 5.6cqw;
   --pad-y: 5.1cqw;
-  --fs: calc(1cqw * var(--density, 1));
+  --fs: calc(1cqw * var(--density, 1) * var(--type-scale, 1));
+  --body-factor: 1.18;
+  --kicker-factor: 1.08;
   --title-line: 0.98;
   --cover-title: 6.1;
   --display-title: 5.9;
@@ -172,7 +204,9 @@ body {
   --export-h: 900;
   --pad-x: 6.4cqw;
   --pad-y: 6.1cqw;
-  --fs: calc(1.02cqw * var(--density, 1));
+  --fs: calc(1.18cqw * var(--density, 1) * var(--type-scale, 1));
+  --body-factor: 1.2;
+  --kicker-factor: 1.1;
   --title-line: 0.98;
   --cover-title: 7.3;
   --display-title: 6.5;
@@ -184,9 +218,11 @@ body {
   --export-h: 1200;
   --pad-x: 7.4cqw;
   --pad-y: 7.1cqw;
-  --fs: calc(1.1cqw * var(--density, 1));
+  --fs: calc(1.3cqw * var(--density, 1) * var(--type-scale, 1));
+  --body-factor: 1.65;
+  --kicker-factor: 1.3;
   --title-line: 1.02;
-  --cover-title: 8.0;
+  --cover-title: 7.8;
   --display-title: 8.0;
 }
 
@@ -196,13 +232,28 @@ body {
   --export-h: 1500;
   --pad-x: 7.2cqw;
   --pad-y: 6.2cqw;
-  --fs: calc(1.16cqw * var(--density, 1));
+  --fs: calc(1.36cqw * var(--density, 1) * var(--type-scale, 1));
+  --body-factor: 2;
+  --kicker-factor: 1.45;
   --title-line: 1.03;
-  --cover-title: 7.8;
-  --display-title: 8.4;
+  --cover-title: 7.6;
+  --display-title: 8.2;
 }
 
 ::selection {
   background: var(--accent);
   color: var(--accent-ink);
+}
+
+/* Small landscape screens: keep the fixed artboard but lift the type scale. */
+@media (max-width: 960px) and (orientation: landscape) {
+  [data-ratio="16:9"] {
+    --fs: calc(1.32cqw * var(--density, 1) * var(--type-scale, 1));
+    --body-factor: 1.12;
+  }
+
+  [data-ratio="4:3"] {
+    --fs: calc(1.32cqw * var(--density, 1) * var(--type-scale, 1));
+    --body-factor: 1.12;
+  }
 }

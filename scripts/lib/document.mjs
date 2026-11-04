@@ -47,6 +47,9 @@ export function renderHtmlDocument({ deck, ratio = "16:9", kind = "deck", css, r
   const title = normalized.meta.title;
   const chrome = kind === "deck" && result.total > 1 ? renderChrome(normalized, result.total) : "";
   const metaDescription = normalized.meta.subtitle || normalized.cover.note || title;
+  const themeColor = normalized.appearance.colors.bg || theme.bg;
+  const styleAttribute = result.style ? ` style="${escapeHtml(result.style)}"` : "";
+  const backgroundAttribute = result.bgEffect ? ` data-bg-effect="${result.bgEffect}"` : "";
 
   return `<!doctype html>
 <html lang="${escapeHtml(normalized.meta.language || "zh-CN")}" data-ratio="${ratioMeta.id}">
@@ -55,7 +58,7 @@ export function renderHtmlDocument({ deck, ratio = "16:9", kind = "deck", css, r
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="html-ppt-template ${escapeHtml(VERSION)}">
   <meta name="description" content="${escapeHtml(metaDescription)}">
-  <meta name="theme-color" content="${escapeHtml(theme.bg)}">
+  <meta name="theme-color" content="${escapeHtml(themeColor)}">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%235eead4'/%3E%3C/svg%3E">
   <title>${escapeHtml(title)} · ${ratioMeta.id} ${ratioMeta.label}</title>
   <style>
@@ -63,8 +66,8 @@ ${css || ""}
   </style>
   <style>@page { size: ${ratioMeta.width}px ${ratioMeta.height}px; margin: 0; }</style>
 </head>
-<body class="is-standalone" data-theme="${escapeHtml(theme.id)}" data-ratio="${ratioMeta.id}" data-kind="${kind}" data-export-width="${ratioMeta.width}" data-export-height="${ratioMeta.height}">
-  <main class="deck${kind === "cover" ? " deck--single" : ""}" data-deck data-ratio="${ratioMeta.id}" data-theme="${escapeHtml(theme.id)}" data-kind="${kind}" data-start="1">
+<body class="is-standalone" data-theme="${escapeHtml(theme.id)}" data-ratio="${ratioMeta.id}" data-kind="${kind}" data-export-width="${ratioMeta.width}" data-export-height="${ratioMeta.height}"${styleAttribute}>
+  <main class="deck${kind === "cover" ? " deck--single" : ""}" data-deck data-ratio="${ratioMeta.id}" data-theme="${escapeHtml(theme.id)}" data-kind="${kind}" data-start="1"${styleAttribute}${backgroundAttribute}>
     <div class="deck__stage">
 ${result.slides.join("\n")}
     </div>

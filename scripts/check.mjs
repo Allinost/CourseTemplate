@@ -42,13 +42,16 @@ const REQUIRED_FILES = [
   "scripts/build.mjs",
   "scripts/serve.mjs",
   "scripts/screenshot.mjs",
+  "scripts/lib/browser.mjs",
   "docs/README.md",
   "docs/projects/html-ppt-template/index.md",
   "docs/projects/html-ppt-template/01-architecture-overview.md",
   "docs/projects/html-ppt-template/02-content-model.md",
   "docs/projects/html-ppt-template/03-openclaw-interface.md",
   "docs/projects/html-ppt-template/04-module-structure.md",
+  "docs/projects/html-ppt-template/05-licensing.md",
   "docs/projects/html-ppt-template/requirements/RQM-0001.md",
+  "docs/projects/html-ppt-template/requirements/RQM-0002.md",
 ];
 
 const problems = [];

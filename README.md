@@ -13,11 +13,13 @@
 
 所有产物都是**独立 HTML**：CSS、运行时与内容全部内联，双击即可演示，也可用本地 Chrome 无头模式批量截图 PNG。
 
+> 移动端 / 桌面端：Studio 默认「跟随窗口」，横屏自动 16:9、竖屏自动 3:5；正文与标题字号已按画布放大，并可按用户外观倍率继续调整。16:9 适合电脑/投影，3:5 适合手机图文与竖屏浏览。
+
 ## 特性
 
 - **一份内容，四种画布**：内容与版式解耦，横版 / 竖版共享同一份语义。
 - **动态自适应**：CSS Container Queries + 字号密度自动收缩（autofit），长内容不会溢出画布。
-- **4 套视觉主题**：纸感杂志 `editorial`、深空极客 `tech`、咨询报告 `consulting`、黑白宣言 `ink`。
+- **4 套预设主题 + 自定义主题**：纸感杂志 `editorial`、深空极客 `tech`、咨询报告 `consulting`、黑白宣言 `ink`，以及可自由配色的 `custom`。
 - **13 种内容版式**：观点、议程、要点、图文、数据、时间线、对比、引用、章节、代码、表格、全图、结尾。
 - **动画系统**：入场、错峰、数字滚动、环境动效、卡片生长；支持 `prefers-reduced-motion`。
 - **演示交互**：键盘翻页、触摸滑动、全屏、总览、进度条、URL 定位。
@@ -149,8 +151,48 @@ curl -X POST http://127.0.0.1:4173/api/openclaw/render \
 | `tech` | 深空极客 | 深空蓝、青色辉光、网格与扫描线 | 技术分享、产品发布、B 站科普 |
 | `consulting` | 咨询报告 | 冷白、结构线、蓝色 + 琥珀强调 | 研究报告、商业提案、数据复盘 |
 | `ink` | 黑白宣言 | 高对比黑底、巨型描边字、朱红 | 观点输出、极简演讲 |
+| `custom` | 自定义 | 任意背景、配色、字体与字号 | 品牌 VI、商业项目、客户定制 |
 
 主题只通过 CSS Token 契约影响颜色、字体与装饰；版式不硬编码配色。
+
+## 自定义主题与配色
+
+`meta.theme` 设为 `custom`，并传入 `appearance`：
+
+```json
+{
+  "meta": { "title": "品牌发布", "theme": "custom" },
+  "appearance": {
+    "colors": {
+      "bg": "#0f172a",
+      "bg2": "#1e293b",
+      "ink": "#f8fafc",
+      "muted": "#94a3b8",
+      "accent": "#f97316",
+      "accent2": "#22d3ee"
+    },
+    "background": { "type": "mesh", "angle": 135 },
+    "typography": {
+      "displayFont": "\"Noto Serif SC\", \"Source Han Serif SC\", serif",
+      "bodyFont": "\"Inter\", \"Noto Sans SC\", sans-serif",
+      "baseScale": 1.08,
+      "titleScale": 1.0,
+      "bodyScale": 1.1,
+      "kickerScale": 1.05
+    }
+  },
+  "slides": []
+}
+```
+
+背景效果：`none` 纯色、`gradient` 渐变、`mesh` 柔光、`grid` 网格、`dots` 点阵、`glass` 磨砂玻璃。Studio 左侧「外观 / 自定义」可直接选色、选字体、拖字号并实时预览。
+
+## 商用与素材
+
+- 不打包字体文件，只引用 **OFL 开源字体名称**（Noto / 思源 / Inter / JetBrains Mono / 霞鹜文楷），未安装时回退系统字体。
+- 示例视觉全部由 CSS 绘制，不内置第三方图片、Logo、图标库或 CDN。
+- `image` / `media.src` 的图片版权由调用方负责；发布前按 [`05-licensing.md`](docs/projects/html-ppt-template/05-licensing.md) 的清单核对。
+- 详细许可证与商用检查清单：[`docs/projects/html-ppt-template/05-licensing.md`](docs/projects/html-ppt-template/05-licensing.md)。
 
 ## 版式
 
@@ -178,7 +220,7 @@ curl -X POST http://127.0.0.1:4173/api/openclaw/render \
 本地安装 Chrome / Edge 后：
 
 ```bash
-# 整个 deck 逐页截图
+# 整个 deck 逐页截图（复用同一个浏览器会话，不会每页弹窗）
 node scripts/screenshot.mjs --html exports/course-design/deck-16x9.html --all
 
 # 单页导出
@@ -192,7 +234,7 @@ node scripts/screenshot.mjs --html exports/course-design/cover-3x4.html --slide 
 | 命令 | 说明 |
 |---|---|
 | `npm run dev` | 启动 Studio + HTTP API（默认 4173） |
-| `npm run build` | 示例 × 4 主题 → `dist/` |
+| `npm run build` | 示例 × 5 主题 → `dist/` |
 | `npm run build:one` | 示例 × 当前主题 → `exports/` |
 | `npm run validate` | 校验示例内容 |
 | `npm test` | 渲染、构建、CLI 测试 |

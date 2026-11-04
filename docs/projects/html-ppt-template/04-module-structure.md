@@ -30,11 +30,12 @@
 │   ├── validate.mjs             # 校验 CLI
 │   ├── openclaw.mjs             # OpenClaw CLI
 │   ├── serve.mjs                # Studio + HTTP API
-│   ├── screenshot.mjs           # 可选 Chrome 截图
+│   ├── screenshot.mjs           # 可选 Chrome 截图（单一浏览器会话）
 │   ├── check.mjs                # 项目自检门禁
 │   └── lib/
 │       ├── build.mjs            # buildDeck / buildAllThemes / gallery
 │       ├── document.mjs         # 独立 HTML 文档装配
+│       ├── browser.mjs          # 持久化 Chrome/CDP 截图会话
 │       └── validate.mjs         # 内容校验规则
 │
 ├── openclaw/
@@ -44,7 +45,7 @@
 │
 ├── examples/demo.deck.json      # 14 页示例，覆盖 11 种版式
 ├── test/                        # node:test
-└── docs/projects/html-ppt-template/  # 本四件套 + 需求
+└── docs/projects/html-ppt-template/  # 本四件套 + 需求 + 商用合规
 ```
 
 ## 2. 生命周期
@@ -134,10 +135,12 @@ screenshot.mjs
 
 | 测试 | 覆盖 |
 |---|---|
-| `test/render.test.mjs` | 归一化、封面/内容页数、四比例、13 版式、XSS、文档装配、主题声明 |
+| `test/render.test.mjs` | 归一化、封面/内容页数、四比例、13 版式、XSS、文档装配、主题声明、自定义外观安全 |
 | `test/build.test.mjs` | 校验、比例解析、四文件构建、manifest、gallery、主题覆盖 |
 | `test/openclaw.test.mjs` | info、validate（文件/stdin）、render 输出 |
 | `npm run check` | 必需文件、manifest type、demo 校验、四比例渲染、真实临时构建 |
+
+视觉验收使用一个持久化 Chrome page target：16:9、4:3、3:4、3:5 各取封面/内容页截图；自定义主题另测背景、颜色、字体与字号。
 
 ## 5. 浏览器支持
 

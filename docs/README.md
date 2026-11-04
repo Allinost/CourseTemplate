@@ -19,13 +19,15 @@
 | [`projects/html-ppt-template/02-content-model.md`](projects/html-ppt-template/02-content-model.md) | 内容模型、字段字典、版式约束 |
 | [`projects/html-ppt-template/03-openclaw-interface.md`](projects/html-ppt-template/03-openclaw-interface.md) | OpenClaw CLI / HTTP 契约与错误码 |
 | [`projects/html-ppt-template/04-module-structure.md`](projects/html-ppt-template/04-module-structure.md) | 文件组织、生命周期、扩展点、已知限制 |
+| [`projects/html-ppt-template/05-licensing.md`](projects/html-ppt-template/05-licensing.md) | 商用字体、图片、代码与发布检查清单 |
 | [`projects/html-ppt-template/requirements/RQM-0001.md`](projects/html-ppt-template/requirements/RQM-0001.md) | 需求原文、验收、决策追溯 |
+| [`projects/html-ppt-template/requirements/RQM-0002.md`](projects/html-ppt-template/requirements/RQM-0002.md) | 商用合规、移动端字号、自定义主题需求 |
 
 ## 项目状态
 
 - 类型：`template`（前端模板）
 - 状态：`active`
-- 版本：`1.0.0`
+- 版本：`1.1.0`
 - 关联：Go-Backend-Core `developmentManager`（登记）；Go-Frontend-Core（可选消费方）
 - 自检：`npm run check`
 

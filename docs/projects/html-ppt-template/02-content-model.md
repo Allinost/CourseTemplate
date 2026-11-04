@@ -10,6 +10,7 @@
   "schemaVersion": "1.0",
   "meta": {},
   "cover": {},
+  "appearance": {},
   "slides": [],
   "closing": {}
 }
@@ -20,6 +21,7 @@
 | `schemaVersion` | string | 否 | 内容模型版本，默认 `1.0` |
 | `meta` | object | 是 | 全局元数据与默认主题 |
 | `cover` | object | 否 | 封面覆盖字段；缺省时继承 `meta` |
+| `appearance` | object | 否 | 自定义主题：配色、背景效果、字体字号 |
 | `slides` | array | 是 | 内容页，1–40 页 |
 | `closing` | object | 否 | 自动结尾页；若 `slides` 已有 `layout=closing` 则不追加 |
 
@@ -35,7 +37,7 @@
 | `kicker` | string | 否 | `HTML PPT TEMPLATE` | 封面眉题 |
 | `footer` | string | 否 | 组织名 + 标题 | 页脚文本 |
 | `language` | string | 否 | `zh-CN` | `<html lang>` |
-| `theme` | enum | 否 | `editorial` | `editorial` / `tech` / `consulting` / `ink` |
+| `theme` | enum | 否 | `editorial` | `editorial` / `tech` / `consulting` / `ink` / `custom` |
 | `slug` | string | 否 | 由标题生成 | 导出目录名；建议英文短横线 |
 | `mark` | string | 否 | `01` | 封面视觉编号/符号 |
 
@@ -53,7 +55,80 @@
 | `date` | string | 否 | `meta.date` | 日期 |
 | `meta` | string[] | 否 | 作者/组织/日期 | 信息胶囊，建议 2–4 个 |
 
-## 4. 内容页通用字段
+## 4. `appearance` 自定义外观
+
+`appearance` 是可选的顶层对象。设置 `meta.theme = "custom"` 后，它会覆盖预设主题的配色、背景与字体字号。
+
+```json
+{
+  "meta": { "title": "品牌发布", "theme": "custom" },
+  "appearance": {
+    "colors": {
+      "bg": "#0f172a",
+      "bg2": "#1e293b",
+      "ink": "#f8fafc",
+      "muted": "#94a3b8",
+      "accent": "#f97316",
+      "accent2": "#22d3ee"
+    },
+    "background": { "type": "mesh", "angle": 135 },
+    "typography": {
+      "displayFont": "\"Noto Serif SC\", serif",
+      "bodyFont": "\"Inter\", \"Noto Sans SC\", sans-serif",
+      "baseScale": 1.08,
+      "titleScale": 1.0,
+      "bodyScale": 1.1,
+      "kickerScale": 1.05
+    }
+  },
+  "slides": []
+}
+```
+
+### 4.1 `colors`
+
+| 字段 | 含义 | 缺省 |
+|---|---|---|
+| `bg` | 背景色 | 主题 `--bg` |
+| `bg2` | 次背景色，渐变/柔光使用 | `bg` 或主题 `--bg-deep` |
+| `ink` | 主文字色 | 主题 `--ink` |
+| `muted` | 辅助文字色 | 主题 `--muted` |
+| `accent` | 主题色（强调、序号、按钮） | 主题 `--accent` |
+| `accent2` | 第二强调色 | 主题 `--accent-2` |
+| `panel` | 卡片/面板底色 | 由 `ink` 推导的半透明色 |
+| `panelStrong` | 强调面板底色 | 由 `ink` 推导 |
+| `line` | 分隔线 | 由 `ink` 推导 |
+| `lineStrong` | 强分隔线 | 由 `ink` 推导 |
+| `faint` | 弱化文字 | 由 `ink` 推导 |
+| `titleColor` | 标题颜色 | `ink` |
+| `bodyColor` | 正文颜色 | `muted` |
+
+颜色只接受 `#hex`、`rgb()`、`rgba()`、`hsl()`、`hsla()`；非法值会被丢弃，不会进入 HTML/CSS。
+
+### 4.2 `background`
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `type` | enum | `none` 纯色 / `gradient` 渐变 / `mesh` 柔光 / `grid` 网格 / `dots` 点阵 / `glass` 磨砂玻璃 |
+| `angle` | number | 渐变角度，0–360，默认 135 |
+
+`glass` 会给数据卡、对比卡、列表卡、面板加 `backdrop-filter: blur()`，适合发布会与品牌视觉。
+
+### 4.3 `typography`
+
+| 字段 | 类型 | 范围 | 说明 |
+|---|---|---|---|
+| `displayFont` | string | — | 标题字体族 |
+| `bodyFont` | string | — | 正文字体族 |
+| `monoFont` | string | — | 标签/页脚/代码字体族 |
+| `baseScale` | number | 0.7–1.8 | 全局字号倍率 |
+| `titleScale` | number | 0.7–1.6 | 标题额外倍率 |
+| `bodyScale` | number | 0.7–1.8 | 正文额外倍率 |
+| `kickerScale` | number | 0.7–1.8 | 标签/页脚额外倍率 |
+
+字体只写 `font-family` 名称，不打包字体文件。推荐使用 Noto / 思源 / Inter / JetBrains Mono / 霞鹜文楷等 OFL 字体；未安装时回退系统字体。详见 [`05-licensing.md`](05-licensing.md)。
+
+## 5. 内容页通用字段
 
 | 字段 | 类型 | 必填 | 含义 |
 |---|---|---|---|
@@ -65,7 +140,7 @@
 | `entrance` | enum | 否 | `rise`（默认）/`blur`/`clip`/`scale`/`left`/`right` |
 | `notes` | string | 否 | 演讲备注，不渲染到画面 |
 
-## 5. 版式与字段
+## 6. 版式与字段
 
 ### 5.1 `statement` · 观点页
 
@@ -229,7 +304,7 @@
 | `items[]` | 否 | `{ label, value }` 清单 |
 | `qr` | 否 | `{ src, alt, label }`；仅有 `src` 时渲染二维码 |
 
-## 6. 文本格式
+## 7. 文本格式
 
 `title` / `body` / `text` / `label` 等文本字段支持：
 
@@ -243,7 +318,7 @@
 
 原始 HTML 不被信任；`<script>` 会显示为文本。
 
-## 7. 长度与密度建议
+## 8. 长度与密度建议
 
 | 内容 | 建议 | 硬限制 |
 |---|---|---|
@@ -257,7 +332,7 @@
 
 自动字号收缩最低 64%。如果内容仍溢出，应拆页，而不是继续堆字。
 
-## 8. 比例与内容策略
+## 9. 比例与内容策略
 
 | 比例 | 内容策略 |
 |---|---|
@@ -266,6 +341,6 @@
 | 3:4 | 封面标题上移，视觉下沉；标题建议 ≤14 字 |
 | 3:5 | 单栏优先；列表转卡片；表格转 2×2；避免 >4 列 |
 
-## 9. 示例
+## 10. 示例
 
 完整示例：[`examples/demo.deck.json`](../../../examples/demo.deck.json)
