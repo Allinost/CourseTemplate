@@ -1,6 +1,7 @@
 /**
- * One persistent Chrome/Edge session for all screenshots and visual checks.
- * Keeps a single page target alive; no new window per slide.
+ * One persistent Chrome/Edge session for screenshots and visual checks.
+ * A single browser process hosts multiple page targets (tabs), so batch
+ * screenshots can run in parallel without opening a new browser per image.
  */
 
 import { spawn } from "node:child_process";
@@ -84,10 +85,10 @@ class Cdp {
   }
 }
 
-async function fetchJson(url, attempts = 60) {
+async function fetchJson(url, attempts = 60, init = {}) {
   for (let index = 0; index < attempts; index += 1) {
     try {
-      const response = await fetch(url);
+      const response = await fetch(url, init);
       if (response.ok) return response.json();
     } catch (_error) {
       /* browser is still starting */
@@ -97,35 +98,8 @@ async function fetchJson(url, attempts = 60) {
   throw new Error(`无法连接浏览器调试端口：${url}`);
 }
 
-export async function createBrowser(options = {}) {
-  const chrome = findChrome(options.chrome);
-  if (!chrome) {
-    throw new Error("未找到 Chrome/Edge。请用 --chrome 指定可执行文件，或设置 CHROME_PATH。");
-  }
-  const port = options.port || 9300 + Math.floor(Math.random() * 500);
-  const profile = await mkdtemp(path.join(tmpdir(), "htmlppt-browser-"));
-  const child = spawn(
-    chrome,
-    [
-      "--headless=new",
-      "--disable-gpu",
-      "--no-sandbox",
-      "--disable-dev-shm-usage",
-      "--hide-scrollbars",
-      "--force-device-scale-factor=1",
-      `--remote-debugging-port=${port}`,
-      `--user-data-dir=${profile}`,
-      "about:blank",
-    ],
-    { windowsHide: true, stdio: "ignore" },
-  );
-
-  await fetchJson(`http://127.0.0.1:${port}/json/version`);
-  const targets = await fetchJson(`http://127.0.0.1:${port}/json`);
-  const page = targets.find((target) => target.type === "page");
-  if (!page) throw new Error("浏览器没有可用的 page target。");
-
-  const ws = new WebSocket(page.webSocketDebuggerUrl);
+async function connectPage(target) {
+  const ws = new WebSocket(target.webSocketDebuggerUrl);
   await new Promise((resolve, reject) => {
     ws.addEventListener("open", resolve, { once: true });
     ws.addEventListener("error", reject, { once: true });
@@ -141,8 +115,8 @@ export async function createBrowser(options = {}) {
   });
 
   return {
-    chrome,
-    port,
+    ws,
+    cdp,
     async capture({ url, width = 1600, height = 900, output }) {
       await cdp.send("Emulation.setDeviceMetricsOverride", {
         width,
@@ -180,12 +154,86 @@ export async function createBrowser(options = {}) {
       await writeFile(output, Buffer.from(shot.data, "base64"));
       return output;
     },
-    async close() {
+    close() {
       try {
         ws.close();
       } catch (_error) {
         /* ignore */
       }
+    },
+  };
+}
+
+export async function createBrowser(options = {}) {
+  const chrome = findChrome(options.chrome);
+  if (!chrome) {
+    throw new Error("未找到 Chrome/Edge。请用 --chrome 指定可执行文件，或设置 CHROME_PATH。");
+  }
+  const port = options.port || 9300 + Math.floor(Math.random() * 500);
+  const profile = await mkdtemp(path.join(tmpdir(), "htmlppt-browser-"));
+  const child = spawn(
+    chrome,
+    [
+      "--headless=new",
+      "--disable-gpu",
+      "--no-sandbox",
+      "--disable-dev-shm-usage",
+      "--hide-scrollbars",
+      "--force-device-scale-factor=1",
+      `--remote-debugging-port=${port}`,
+      `--user-data-dir=${profile}`,
+      "about:blank",
+    ],
+    { windowsHide: true, stdio: "ignore" },
+  );
+
+  await fetchJson(`http://127.0.0.1:${port}/json/version`);
+  const targets = await fetchJson(`http://127.0.0.1:${port}/json`);
+  const target = targets.find((item) => item.type === "page");
+  if (!target) throw new Error("浏览器没有可用的 page target。");
+
+  const pages = [await connectPage(target)];
+  const initialPage = pages[0];
+
+  async function createPage() {
+    let newTarget;
+    try {
+      newTarget = await fetchJson(`http://127.0.0.1:${port}/json/new?about:blank`, 10, { method: "PUT" });
+    } catch (_error) {
+      newTarget = await fetchJson(`http://127.0.0.1:${port}/json/new?about:blank`, 10);
+    }
+    const page = await connectPage(newTarget);
+    pages.push(page);
+    return page;
+  }
+
+  return {
+    chrome,
+    port,
+    createPage,
+    capture: (task) => initialPage.capture(task),
+    evaluate: (expression) => initialPage.evaluate(expression),
+    screenshot: (output) => initialPage.screenshot(output),
+    async captureMany(tasks, options = {}) {
+      const concurrency = Math.max(1, Math.min(options.concurrency || 4, tasks.length || 1));
+      while (pages.length < concurrency) await createPage();
+      const pool = pages.slice(0, concurrency);
+      const results = new Array(tasks.length);
+      let cursor = 0;
+      await Promise.all(
+        pool.map(async (page) => {
+          while (true) {
+            const index = cursor;
+            cursor += 1;
+            if (index >= tasks.length) return;
+            results[index] = await page.capture(tasks[index]);
+          }
+        }),
+      );
+      return results;
+    },
+    async close() {
+      pages.forEach((page) => page.close());
       child.kill();
       await delay(250);
       await rm(profile, { recursive: true, force: true }).catch(() => {});

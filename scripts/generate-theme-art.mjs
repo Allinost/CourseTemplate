@@ -149,11 +149,15 @@ if (!chrome) {
   await mkdir(outDir, { recursive: true });
   const browser = await createBrowser({ chrome });
   try {
-    for (const [name, html] of themes) {
-      const url = `data:text/html;charset=utf-8,${encodeURIComponent(html)}`;
-      const output = path.join(outDir, `theme-${name}-art.png`);
-      await browser.capture({ url, width: WIDTH, height: HEIGHT, output });
-      console.log(`  ${path.relative(process.cwd(), output)}`);
+    const tasks = themes.map(([name, html]) => ({
+      url: `data:text/html;charset=utf-8,${encodeURIComponent(html)}`,
+      width: WIDTH,
+      height: HEIGHT,
+      output: path.join(outDir, `theme-${name}-art.png`),
+    }));
+    const results = await browser.captureMany(tasks, { concurrency: 4 });
+    for (const result of results) {
+      console.log(`  ${path.relative(process.cwd(), result.output)}`);
     }
   } finally {
     await browser.close();

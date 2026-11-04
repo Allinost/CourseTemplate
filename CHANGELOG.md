@@ -12,9 +12,13 @@
 - **Studio 外观面板**：预设主题 + 自定义主题、颜色选择器、背景效果、字体下拉、字号滑杆，实时预览。
 - **移动端优先的工作台布局**：窄屏下预览置顶、控制区自适应；默认比例改为「跟随窗口」（横屏 16:9 / 竖屏 3:5）。
 - **字号放大**：提升 16:9 正文、3:4 / 3:5 标题与正文的基础倍率，竖版列表与表格更易读。
+- **横板留白调整**：16:9 / 4:3 四周 padding 先减半再增加 50%，减少“中间挤、四周空”。
+- **竖屏修复**：封面艺术下沉、页脚加背景条、表格/对比/代码/时间线按竖屏重新分配，避免重叠与溢出。
+- **Studio 3:5 预览修复**：移动端按 3:5 比例重新计算画布宽高，避免被 `max-height` 压扁。
 - **商用合规文档**：`05-licensing.md`，记录 OFL 字体策略、图片/代码来源与商用发布清单。
-- **单浏览器截图**：`scripts/screenshot.mjs` 复用同一个 Chrome page target，不再每页新开窗口。
-- **本地示例图**：`scripts/generate-theme-art.mjs` 用同一浏览器会话生成 4 张原创主题视觉；`examples/generated/` 已 gitignore，不提交图片。
+- **单浏览器截图**：`scripts/screenshot.mjs` 复用同一个 Chrome 进程，并用多标签并行批量截图（`--concurrency`，默认 4）。
+- **本地示例图**：`scripts/generate-theme-art.mjs` 用同一浏览器会话并行生成 4 张原创主题视觉；`examples/generated/` 已 gitignore，不提交图片。
+- **预览保留**：`preview/` 目录不再自动删除，已加入 gitignore，可直接打开 `preview/index.html` 查看。
 
 ### Changed
 

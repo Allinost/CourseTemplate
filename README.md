@@ -242,8 +242,8 @@ curl -X POST http://127.0.0.1:4173/api/openclaw/render \
 本地安装 Chrome / Edge 后：
 
 ```bash
-# 整个 deck 逐页截图（复用同一个浏览器会话，不会每页弹窗）
-node scripts/screenshot.mjs --html exports/course-design/deck-16x9.html --all
+# 整个 deck 逐页截图（默认 4 路并行，同一浏览器多标签）
+node scripts/screenshot.mjs --html exports/course-design/deck-16x9.html --all --concurrency 6
 
 # 单页导出
 node scripts/screenshot.mjs --html exports/course-design/cover-3x4.html --slide 1 --out preview/cover.png
@@ -251,6 +251,8 @@ node scripts/screenshot.mjs --html exports/course-design/cover-3x4.html --slide 
 # 生成本地原创主题示例图（examples/generated/ 已被 gitignore）
 npm run examples:art
 ```
+
+`preview/` 会保留每次本地预览，已被 gitignore；直接打开 `preview/index.html` 查看最终效果图与入口。
 
 `?export=1&slide=N` 会关闭动画、隐藏控制条并把画布填满视口；配合 `--force-device-scale-factor=1` 得到精确尺寸。
 

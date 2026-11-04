@@ -228,6 +228,7 @@ node scripts/screenshot.mjs --html exports/my-deck/cover-3x4.html --slide 1 --ou
 | `--html` | 必填，构建后的 HTML |
 | `--slide` | 单页序号，默认 1 |
 | `--all` | 导出全部页面 |
+| `--concurrency` | 并行截图页数，默认 4；同一浏览器多标签，不新开浏览器进程 |
 | `--out` | 输出目录或单文件；默认 `preview/<name>-<ratio>` |
 | `--width` / `--height` | 覆盖尺寸；默认按 `data-ratio` |
 | `--chrome` | Chrome/Edge 可执行文件；也可用 `CHROME_PATH` |

@@ -792,6 +792,7 @@ body.studio-focus .studio-stage .deck__stage {
   }
 
   .studio-stage .deck__stage {
+    width: min(100%, calc((100vh - 230px) * var(--ar)));
     max-height: calc(100vh - 230px);
   }
 }
@@ -828,7 +829,8 @@ body.studio-focus .studio-stage .deck__stage {
   }
 
   .studio-stage .deck__stage {
-    max-height: 58vh;
+    width: min(100%, calc(68vh * var(--ar)));
+    max-height: 68vh;
   }
 
   .studio-panel {

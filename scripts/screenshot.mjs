@@ -70,17 +70,23 @@ async function main() {
   const results = [];
 
   try {
-    for (const slide of slides) {
+    const tasks = slides.map((slide) => {
       const output = isSingleFile
         ? outBase.endsWith(".png")
           ? outBase
           : `${outBase}.png`
         : path.join(outBase, `slide-${String(slide).padStart(2, "0")}.png`);
       const url = `${pathToFileURL(htmlPath).href}?export=1&slide=${slide}`;
-      const result = await browser.capture({ url, width, height, output });
-      results.push({ slide, ...result });
+      return { slide, url, output, width, height };
+    });
+    const captured = await browser.captureMany(tasks, {
+      concurrency: Math.max(1, Number(args.concurrency || 4)),
+    });
+    for (let index = 0; index < captured.length; index += 1) {
+      const result = captured[index];
+      results.push({ slide: tasks[index].slide, ...result });
       if (!args.quiet) {
-        console.log(`  slide ${String(slide).padStart(2, "0")} -> ${path.relative(process.cwd(), output)}`);
+        console.log(`  slide ${String(tasks[index].slide).padStart(2, "0")} -> ${path.relative(process.cwd(), result.output)}`);
       }
     }
   } finally {

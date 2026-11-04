@@ -87,6 +87,6 @@ deck.json
 - `runtime.js` 的 autofit 通过比较 `.slide__inner` 的 `scrollHeight` 与 `clientHeight` 实现；装饰性绝对定位元素会造成少量 scroll overflow，因此代码有 32px 容差与“收缩不再改善即停止”的保护。新增滚动容器时需同步调整。
 - 导出模式使用 `html.is-export` 冻结动画；新增动画必须加对应的冻结规则。
 - Studio 通过 `window.HTMLPPT.mount()` 重挂载，重渲染前必须 `state.api.destroy()`，否则窗口级键盘监听会泄漏。
-- 截图脚本通过 `scripts/lib/browser.mjs` 复用单一 Chrome page target；不要改回每页 `spawn` 新浏览器。
+- 截图脚本通过 `scripts/lib/browser.mjs` 复用单一 Chrome 进程，并用多个 page target（标签页）并行批量截图；不要改回每页 `spawn` 新浏览器。
 - 自定义外观通过 `appearanceStyle()` 生成内联 CSS 变量，必须经过 `safeColor` / `safeFont` 校验；新增颜色/字体字段时同步 schema、Studio 面板与文档。
 - 字体只引用 OFL 名称，不打包字体文件；新增字体先在 `05-licensing.md` 记录许可证。
