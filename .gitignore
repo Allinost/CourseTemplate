@@ -2,6 +2,7 @@ node_modules/
 dist/
 exports/
 preview/
+examples/generated/
 *.log
 .DS_Store
 Thumbs.db
