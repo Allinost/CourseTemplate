@@ -1,0 +1,197 @@
+{
+  "schemaVersion": "1.0",
+  "meta": {
+    "slug": "course-design",
+    "title": "把知识做成一场演出",
+    "subtitle": "一门好课的设计、节奏与视觉表达",
+    "organization": "ALLINOST ACADEMY",
+    "author": "课程设计工作台",
+    "date": "2026.11",
+    "kicker": "COURSE DESIGN / 2026",
+    "footer": "HTML PPT TEMPLATE · 一份内容，四种画布",
+    "language": "zh-CN",
+    "theme": "editorial",
+    "mark": "01"
+  },
+  "cover": {
+    "kicker": "COURSE DESIGN / 2026",
+    "badge": "TEACHING DECK",
+    "title": "把知识做成一场演出",
+    "subtitle": "一门好课的设计、节奏与视觉表达。让内容在横屏与竖屏之间，仍然保持同一种气质。",
+    "meta": ["COURSE DESIGN", "12 LESSONS", "2026.11"],
+    "note": "ADAPTIVE DECK · 16:9 CONTENT / 4:3 COVER / 3:4 COVER / 3:5 CONTENT",
+    "date": "2026.11"
+  },
+  "slides": [
+    {
+      "id": "thesis",
+      "layout": "statement",
+      "entrance": "blur",
+      "kicker": "THE THESIS",
+      "title": "好课程不是信息的搬运，而是**注意力的编排**。",
+      "body": "学习发生在注意力被接住的那几秒。每一次停顿、强调与转场，都应该服务于理解，而不是装饰。"
+    },
+    {
+      "id": "agenda",
+      "layout": "agenda",
+      "kicker": "AGENDA",
+      "title": "今天，我们拆解四件事",
+      "body": "从内容结构到视觉节奏，再到一次可复用的导出流程。",
+      "items": [
+        { "title": "注意力结构", "text": "先决定听众在每一页应该看见什么。" },
+        { "title": "内容分镜", "text": "把大纲翻译成有起伏的页面序列。" },
+        { "title": "视觉语法", "text": "用字号、留白与动效建立层级。" },
+        { "title": "自适应导出", "text": "同一份 JSON，生成横屏与竖屏。" }
+      ]
+    },
+    {
+      "id": "chapter-1",
+      "layout": "section",
+      "kicker": "PART ONE",
+      "index": "01",
+      "title": "先设计注意力，再设计页面",
+      "body": "页面不是容器，而是一段被安排过的观看路径。"
+    },
+    {
+      "id": "three-breaths",
+      "layout": "bullets",
+      "kicker": "CONTENT RHYTHM",
+      "title": "一条好内容的三次呼吸",
+      "body": "把信息切成可以被消化的段落，每一段只承担一个任务。",
+      "aside": { "value": "03", "label": "rhythm moves" },
+      "items": [
+        {
+          "title": "接住：用一个反常识开场",
+          "text": "先让听众意识到“我原来想错了”，再给出新的解释框架。",
+          "tag": "HOOK"
+        },
+        {
+          "title": "展开：用结构降低理解成本",
+          "text": "一个观点配一个例子，一个例子配一个可执行的动作。",
+          "tag": "BODY"
+        },
+        {
+          "title": "收束：留下一个可带走的句子",
+          "text": "听众记不住二十页，但会记住一句能被复述的话。",
+          "tag": "PAYOFF"
+        }
+      ]
+    },
+    {
+      "id": "storyboard",
+      "layout": "split",
+      "kicker": "STORYBOARD",
+      "title": "从大纲到分镜，中间隔着一次翻译",
+      "body": "大纲负责“讲什么”，分镜负责“什么时候讲、用什么证据讲、讲完之后让听众做什么”。",
+      "bullets": ["每页只保留一个中心动作", "用对比制造认知落差", "让数字承担证据，而不是装饰"],
+      "media": { "type": "grid", "caption": "STRUCTURE / 01" }
+    },
+    {
+      "id": "numbers",
+      "layout": "stats",
+      "kicker": "BY THE NUMBERS",
+      "title": "一节课的四个关键数",
+      "body": "节奏不是感觉，它可以被设计和复盘。",
+      "source": "SOURCE · WORKSHOP OBSERVATION / 2026",
+      "items": [
+        { "value": 92, "suffix": "%", "label": "注意力峰值", "note": "开场 90 秒内出现第一次认知冲突" },
+        { "value": 3.5, "suffix": "x", "label": "记忆留存", "note": "图文 + 动效结构相比纯文字" },
+        { "value": 18, "suffix": " min", "label": "单段上限", "note": "超过后需要一次节奏切换" },
+        { "value": 4, "suffix": " formats", "label": "自适应画布", "note": "横版与竖版共享同一份内容" }
+      ]
+    },
+    {
+      "id": "timeline",
+      "layout": "timeline",
+      "kicker": "LESSON ARC",
+      "title": "90 分钟课程的五段节奏",
+      "body": "每一次切换，都应该有明确的认知任务。",
+      "items": [
+        { "date": "00 — 08", "title": "钩子", "text": "用问题或反常识建立张力。" },
+        { "date": "08 — 25", "title": "框架", "text": "给出全课的地图与关键词。" },
+        { "date": "25 — 55", "title": "展开", "text": "案例、对比、演示交替推进。" },
+        { "date": "55 — 75", "title": "练习", "text": "让听众亲手完成一次迁移。" },
+        { "date": "75 — 90", "title": "收束", "text": "回扣开场问题，留下行动。" }
+      ]
+    },
+    {
+      "id": "quote",
+      "layout": "quote",
+      "entrance": "clip",
+      "kicker": "A NOTE ON DESIGN",
+      "quote": "设计不是装饰，是信息的秩序。",
+      "cite": "Jan Tschichold",
+      "role": "Typographer",
+      "body": "当一页只保留一个重点，观众才不需要替你做选择。"
+    },
+    {
+      "id": "compare",
+      "layout": "compare",
+      "kicker": "BEFORE / AFTER",
+      "title": "从“讲完”到“被记住”",
+      "body": "同样的内容，换一种组织方式，理解成本会完全不同。",
+      "items": [
+        {
+          "label": "BEFORE",
+          "title": "传统课件",
+          "text": "信息密度高，但缺少观看路径。",
+          "tone": "muted",
+          "bullets": ["一页塞满要点", "字号层级接近", "动画只是出现"]
+        },
+        {
+          "label": "AFTER",
+          "title": "动态课件",
+          "text": "每一页只完成一个认知动作。",
+          "tone": "accent",
+          "bullets": ["一页一个主张", "字号与留白建立层级", "动效负责引导视线"]
+        }
+      ]
+    },
+    {
+      "id": "chapter-2",
+      "layout": "section",
+      "kicker": "PART TWO",
+      "index": "02",
+      "title": "让内容自己生长",
+      "body": "当内容和版式解耦，同一份讲稿就能适配更多场景。"
+    },
+    {
+      "id": "content-as-data",
+      "layout": "code",
+      "kicker": "CONTENT AS DATA",
+      "title": "内容即数据，版式只是渲染器",
+      "body": "OpenClaw 只需要生成一份 deck.json，模板负责把它翻译成四种画布。",
+      "bullets": ["内容字段与视觉主题解耦", "横竖版共享同一份语义", "导出物是可直接打开的 HTML"],
+      "code": {
+        "filename": "deck.json",
+        "language": "json",
+        "content": "{\n  \"meta\": {\n    \"title\": \"把知识做成一场演出\",\n    \"theme\": \"editorial\"\n  },\n  \"slides\": [\n    { \"layout\": \"statement\", \"title\": \"先设计注意力\" },\n    { \"layout\": \"stats\", \"items\": [ ... ] }\n  ]\n}"
+      }
+    },
+    {
+      "id": "formats",
+      "layout": "table",
+      "kicker": "ADAPTIVE CANVAS",
+      "title": "四种画布，各司其职",
+      "body": "不是把横版压扁成竖版，而是让版式随画布重新编排。",
+      "headers": ["比例", "用途", "像素", "内容策略"],
+      "rows": [
+        ["16 : 9", "横版内容", "1600 × 900", "双栏、宽时间线、横向对比"],
+        ["4 : 3", "横版封面", "1200 × 900", "标题优先，视觉锚点靠右"],
+        ["3 : 4", "竖版封面", "900 × 1200", "标题上移，视觉元素下沉"],
+        ["3 : 5", "竖版内容", "900 × 1500", "单栏堆叠、纵向时间线、2×2 数据"]
+      ],
+      "note": "POWERED BY CSS CONTAINER QUERIES + AUTOFIT"
+    }
+  ],
+  "closing": {
+    "kicker": "THE END / THE START",
+    "title": "现在，开始构建",
+    "body": "把下一次分享、课程或产品发布，交给一份可复用的内容结构。",
+    "items": [
+      { "label": "Template", "value": "html-ppt-template" },
+      { "label": "Command", "value": "npm run dev" },
+      { "label": "OpenClaw", "value": "node scripts/openclaw.mjs render" }
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "html-ppt-template",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Zero-dependency, animated HTML presentation templates with adaptive 16:9 / 4:3 / 3:4 / 3:5 export for OpenClaw.",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "build": "node scripts/build.mjs --input examples/demo.deck.json --all-themes",
+    "build:one": "node scripts/build.mjs --input examples/demo.deck.json",
+    "validate": "node scripts/validate.mjs --input examples/demo.deck.json",
+    "test": "node --test",
+    "check": "node scripts/check.mjs",
+    "sop-check": "node scripts/check.mjs",
+    "openclaw": "node scripts/openclaw.mjs",
+    "screenshot": "node scripts/screenshot.mjs"
+  }
+}

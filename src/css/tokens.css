@@ -1,0 +1,208 @@
+/* ==========================================================================
+   HTML PPT Template — tokens, reset, ratio primitives
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+html {
+  background: #08090b;
+  color-scheme: dark;
+}
+
+body {
+  overflow: hidden;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, rgba(255, 255, 255, 0.06), transparent 60%),
+    #08090b;
+  color: #f4f4f5;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+:root {
+  --font-sans: "Inter", "SF Pro Text", "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-serif: "Iowan Old Style", "Palatino Linotype", "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", serif;
+  --font-mono: "SFMono-Regular", "Cascadia Code", "JetBrains Mono", "Fira Code", "Consolas", monospace;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --radius-sm: 0.45cqw;
+  --radius-md: 0.9cqw;
+  --radius-lg: 1.6cqw;
+}
+
+/* --------------------------------------------------------------------------
+   Themes. Every theme is a token contract; layouts never hard-code colors.
+   -------------------------------------------------------------------------- */
+
+[data-theme="editorial"] {
+  --bg: #f2ecdf;
+  --bg-deep: #e7dcc8;
+  --bg-soft: #f8f4ea;
+  --ink: #1d1a15;
+  --ink-soft: #332e26;
+  --muted: #6d6457;
+  --faint: #999080;
+  --accent: #d4532d;
+  --accent-ink: #fff8ef;
+  --accent-2: #255c4b;
+  --accent-2-ink: #f2fbf5;
+  --line: rgba(29, 26, 21, 0.15);
+  --line-strong: rgba(29, 26, 21, 0.3);
+  --panel: rgba(29, 26, 21, 0.045);
+  --panel-strong: rgba(29, 26, 21, 0.08);
+  --chip: rgba(29, 26, 21, 0.06);
+  --display: var(--font-serif);
+  --body: var(--font-sans);
+  --mono: var(--font-mono);
+  --shadow: 0 2cqw 7cqw rgba(46, 35, 19, 0.14);
+  --grain: 0.05;
+  color-scheme: light;
+}
+
+[data-theme="tech"] {
+  --bg: #070d17;
+  --bg-deep: #040811;
+  --bg-soft: #0c1625;
+  --ink: #eaf2ff;
+  --ink-soft: #c7d8ee;
+  --muted: #8ca1bb;
+  --faint: #53657d;
+  --accent: #5eead4;
+  --accent-ink: #04211d;
+  --accent-2: #a3e635;
+  --accent-2-ink: #12210a;
+  --line: rgba(151, 190, 235, 0.17);
+  --line-strong: rgba(151, 190, 235, 0.34);
+  --panel: rgba(94, 234, 212, 0.055);
+  --panel-strong: rgba(94, 234, 212, 0.1);
+  --chip: rgba(151, 190, 235, 0.09);
+  --display: var(--font-sans);
+  --body: var(--font-sans);
+  --mono: var(--font-mono);
+  --shadow: 0 2cqw 8cqw rgba(0, 0, 0, 0.45);
+  --grain: 0.08;
+  color-scheme: dark;
+}
+
+[data-theme="consulting"] {
+  --bg: #f7f8fa;
+  --bg-deep: #e8edf4;
+  --bg-soft: #ffffff;
+  --ink: #101827;
+  --ink-soft: #26344a;
+  --muted: #64748b;
+  --faint: #94a3b8;
+  --accent: #1d4ed8;
+  --accent-ink: #f4f7ff;
+  --accent-2: #f59e0b;
+  --accent-2-ink: #2b1a00;
+  --line: rgba(16, 24, 39, 0.12);
+  --line-strong: rgba(16, 24, 39, 0.25);
+  --panel: rgba(16, 24, 39, 0.035);
+  --panel-strong: rgba(29, 78, 216, 0.07);
+  --chip: rgba(16, 24, 39, 0.055);
+  --display: var(--font-sans);
+  --body: var(--font-sans);
+  --mono: var(--font-mono);
+  --shadow: 0 2cqw 6cqw rgba(16, 24, 39, 0.12);
+  --grain: 0;
+  color-scheme: light;
+}
+
+[data-theme="ink"] {
+  --bg: #121110;
+  --bg-deep: #090808;
+  --bg-soft: #1c1a17;
+  --ink: #f3efe6;
+  --ink-soft: #ded8ca;
+  --muted: #a29b8e;
+  --faint: #6c665c;
+  --accent: #ff4d2e;
+  --accent-ink: #190703;
+  --accent-2: #d8c9a7;
+  --accent-2-ink: #201a0e;
+  --line: rgba(243, 239, 230, 0.16);
+  --line-strong: rgba(243, 239, 230, 0.34);
+  --panel: rgba(243, 239, 230, 0.05);
+  --panel-strong: rgba(243, 239, 230, 0.09);
+  --chip: rgba(243, 239, 230, 0.07);
+  --display: var(--font-sans);
+  --body: var(--font-sans);
+  --mono: var(--font-mono);
+  --shadow: 0 2cqw 8cqw rgba(0, 0, 0, 0.55);
+  --grain: 0.07;
+  color-scheme: dark;
+}
+
+/* --------------------------------------------------------------------------
+   Ratio contracts. The same slide markup is laid out with container units.
+   -------------------------------------------------------------------------- */
+
+[data-ratio="16:9"] {
+  --ar: 1.777778;
+  --export-w: 1600;
+  --export-h: 900;
+  --pad-x: 5.6cqw;
+  --pad-y: 5.1cqw;
+  --fs: calc(1cqw * var(--density, 1));
+  --title-line: 0.98;
+  --cover-title: 6.1;
+  --display-title: 5.9;
+}
+
+[data-ratio="4:3"] {
+  --ar: 1.333333;
+  --export-w: 1200;
+  --export-h: 900;
+  --pad-x: 6.4cqw;
+  --pad-y: 6.1cqw;
+  --fs: calc(1.02cqw * var(--density, 1));
+  --title-line: 0.98;
+  --cover-title: 7.3;
+  --display-title: 6.5;
+}
+
+[data-ratio="3:4"] {
+  --ar: 0.75;
+  --export-w: 900;
+  --export-h: 1200;
+  --pad-x: 7.4cqw;
+  --pad-y: 7.1cqw;
+  --fs: calc(1.1cqw * var(--density, 1));
+  --title-line: 1.02;
+  --cover-title: 8.0;
+  --display-title: 8.0;
+}
+
+[data-ratio="3:5"] {
+  --ar: 0.6;
+  --export-w: 900;
+  --export-h: 1500;
+  --pad-x: 7.2cqw;
+  --pad-y: 6.2cqw;
+  --fs: calc(1.16cqw * var(--density, 1));
+  --title-line: 1.03;
+  --cover-title: 7.8;
+  --display-title: 8.4;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}

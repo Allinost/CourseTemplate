@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="HTML PPT Template 工作台：一份内容，自适应导出 16:9 / 4:3 / 3:4 / 3:5。">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%235eead4'/%3E%3C/svg%3E">
+  <title>HTML PPT Studio</title>
+  <link rel="stylesheet" href="./css/tokens.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/animations.css">
+  <link rel="stylesheet" href="./css/studio.css">
+</head>
+<body class="studio">
+  <header class="studio-top">
+    <div class="brand">
+      <div class="brand__mark" aria-hidden="true">◫</div>
+      <div class="brand__text">
+        <h1 class="brand__title">HTML PPT Studio</h1>
+        <p class="brand__sub">one deck · four canvases · openclaw ready</p>
+      </div>
+    </div>
+    <div class="studio-actions">
+      <button class="btn btn--ghost" type="button" id="btn-demo" title="重新载入示例内容">载入示例</button>
+      <button class="btn" type="button" id="btn-import" title="导入 deck.json">导入 JSON</button>
+      <button class="btn" type="button" id="btn-download" title="下载当前内容 JSON">下载 JSON</button>
+      <button class="btn btn--primary" type="button" id="btn-export" title="生成四种比例的独立 HTML">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+        导出四种格式
+      </button>
+    </div>
+  </header>
+
+  <div class="studio-main">
+    <aside class="studio-panel studio-panel--left" aria-label="模板设置">
+      <section class="panel-section">
+        <h2 class="panel-title">主题 <span id="theme-count">4</span></h2>
+        <div class="theme-list" id="theme-list"></div>
+      </section>
+
+      <section class="panel-section">
+        <h2 class="panel-title">画布比例 <span id="ratio-status">16:9</span></h2>
+        <div class="ratio-list" id="ratio-list">
+          <button class="ratio-btn" type="button" data-ratio="16:9" aria-pressed="true">
+            <span class="ratio-btn__value">16 : 9</span>
+            <span class="ratio-btn__label">横版内容</span>
+          </button>
+          <button class="ratio-btn" type="button" data-ratio="3:5" aria-pressed="false">
+            <span class="ratio-btn__value">3 : 5</span>
+            <span class="ratio-btn__label">竖版内容</span>
+          </button>
+          <button class="ratio-btn" type="button" data-ratio="4:3" aria-pressed="false">
+            <span class="ratio-btn__value">4 : 3</span>
+            <span class="ratio-btn__label">横版封面</span>
+          </button>
+          <button class="ratio-btn" type="button" data-ratio="3:4" aria-pressed="false">
+            <span class="ratio-btn__value">3 : 4</span>
+            <span class="ratio-btn__label">竖版封面</span>
+          </button>
+          <button class="ratio-btn ratio-btn--wide" type="button" data-ratio="auto" aria-pressed="false">
+            <span class="ratio-btn__value">跟随窗口</span>
+            <span class="ratio-btn__label">横屏 16:9 · 竖屏 3:5</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="panel-section">
+        <h2 class="panel-title">页面 <span id="slide-count">—</span></h2>
+        <div class="slide-list" id="slide-list"></div>
+      </section>
+    </aside>
+
+    <main class="studio-canvas">
+      <div class="studio-toolbar">
+        <div class="studio-toolbar__meta">
+          <span class="studio-toolbar__ratio" id="canvas-ratio">16:9</span>
+          <span class="studio-toolbar__note" id="canvas-note">横版内容 · 1600 × 900</span>
+        </div>
+        <div class="studio-toolbar__nav">
+          <button class="btn btn--ghost" type="button" id="btn-prev" aria-label="上一页">←</button>
+          <span class="studio-toolbar__count" id="canvas-count">01 / 01</span>
+          <button class="btn btn--ghost" type="button" id="btn-next" aria-label="下一页">→</button>
+        </div>
+      </div>
+
+      <div class="studio-stage" id="stage" aria-live="polite"></div>
+      <p class="studio-hint">← → 翻页 · O 总览 · F 全屏 · 导出后可用 ?export=1&amp;slide=N 截图</p>
+    </main>
+
+    <aside class="studio-panel studio-panel--right" aria-label="接口与内容">
+      <section class="panel-section">
+        <h2 class="panel-title">OpenClaw <span>CLI / HTTP</span></h2>
+        <p class="note">让 OpenClaw 读取 <strong>openclaw/deck.schema.json</strong>，生成同样结构的 JSON，然后调用：</p>
+        <div class="code-box">
+          <div class="code-box__head">
+            <span>render command</span>
+            <button type="button" id="btn-copy-cmd">复制</button>
+          </div>
+          <pre id="openclaw-command">node scripts/openclaw.mjs render --input deck.json --out exports/course-design --formats all</pre>
+        </div>
+        <p class="note" style="margin-top:9px">HTTP：<strong>POST /api/openclaw/render</strong>，请求体 <strong>{ "deck": { ... } }</strong>。</p>
+      </section>
+
+      <section class="panel-section">
+        <h2 class="panel-title">内容 JSON <span id="json-status">ready</span></h2>
+        <textarea class="json-editor" id="deck-json" spellcheck="false" aria-label="deck JSON"></textarea>
+        <div class="json-actions">
+          <button class="btn" type="button" id="btn-apply">应用并预览</button>
+          <button class="btn btn--ghost" type="button" id="btn-format">格式化</button>
+          <button class="btn btn--ghost" type="button" id="btn-validate">校验</button>
+        </div>
+        <div class="status" id="json-message"></div>
+      </section>
+
+      <section class="panel-section">
+        <h2 class="panel-title">最近导出 <span id="export-status">—</span></h2>
+        <p class="note">导出文件位于仓库 <strong>exports/</strong>，每个 HTML 都是独立可演示文件。</p>
+        <div class="export-list" id="export-list"></div>
+      </section>
+    </aside>
+  </div>
+
+  <input type="file" id="file-input" accept=".json,application/json" hidden>
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="./js/runtime.js"></script>
+  <script type="module" src="./js/studio.js"></script>
+</body>
+</html>

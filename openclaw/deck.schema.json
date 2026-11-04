@@ -1,0 +1,404 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://allinost.local/html-ppt-template/deck.schema.json",
+  "title": "HTML PPT Template Deck",
+  "description": "一份内容，四种画布。OpenClaw 生成该对象后，调用 node scripts/openclaw.mjs render 即可导出。",
+  "type": "object",
+  "required": ["meta", "slides"],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "default": "1.0",
+      "description": "内容模型版本。"
+    },
+    "meta": {
+      "type": "object",
+      "required": ["title"],
+      "properties": {
+        "title": { "type": "string", "minLength": 1, "maxLength": 60, "description": "封面主标题，也是默认文档标题。" },
+        "subtitle": { "type": "string", "description": "副标题。" },
+        "organization": { "type": "string", "description": "组织/品牌名，显示在封面顶部与导航栏。" },
+        "author": { "type": "string", "description": "作者或讲师。" },
+        "date": { "type": "string", "description": "日期文本，例如 2026.11。" },
+        "kicker": { "type": "string", "description": "封面眉题，默认 HTML PPT TEMPLATE。" },
+        "footer": { "type": "string", "description": "页脚文本，默认组织名 + 标题。" },
+        "language": { "type": "string", "default": "zh-CN" },
+        "theme": {
+          "type": "string",
+          "enum": ["editorial", "tech", "consulting", "ink"],
+          "default": "editorial",
+          "description": "视觉主题。editorial=纸感杂志；tech=深空极客；consulting=咨询报告；ink=黑白宣言。"
+        },
+        "slug": { "type": "string", "description": "导出目录名，建议使用英文短横线。" },
+        "mark": { "type": "string", "description": "封面视觉编号/符号，默认 01。" }
+      },
+      "additionalProperties": true
+    },
+    "cover": {
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "kicker": { "type": "string" },
+        "badge": { "type": "string", "description": "右上角胶囊标签。" },
+        "note": { "type": "string", "description": "封面底部说明。" },
+        "date": { "type": "string" },
+        "meta": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "封面信息胶囊，建议 2-4 个。"
+        }
+      },
+      "additionalProperties": true
+    },
+    "slides": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 40,
+      "description": "内容页。封面由 meta/cover 自动生成，不需要在 slides 中重复。",
+      "items": {
+        "oneOf": [
+          { "$ref": "#/$defs/statement" },
+          { "$ref": "#/$defs/agenda" },
+          { "$ref": "#/$defs/bullets" },
+          { "$ref": "#/$defs/split" },
+          { "$ref": "#/$defs/stats" },
+          { "$ref": "#/$defs/timeline" },
+          { "$ref": "#/$defs/compare" },
+          { "$ref": "#/$defs/quote" },
+          { "$ref": "#/$defs/section" },
+          { "$ref": "#/$defs/code" },
+          { "$ref": "#/$defs/table" },
+          { "$ref": "#/$defs/image" },
+          { "$ref": "#/$defs/closingSlide" }
+        ]
+      }
+    },
+    "closing": {
+      "$ref": "#/$defs/closingBlock",
+      "description": "可选的自动结尾页；如果 slides 中已有 layout=closing，则不会重复追加。"
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "common": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "layout": { "type": "string" },
+        "kicker": { "type": "string", "description": "页眉小标签。" },
+        "title": { "type": "string" },
+        "body": { "type": "string", "description": "支持 **粗体**、*斜体*、`代码`、[链接](https://...) 与换行。" },
+        "notes": { "type": "string", "description": "演讲备注，不渲染到画面。" },
+        "entrance": {
+          "type": "string",
+          "enum": ["rise", "blur", "clip", "scale", "left", "right"],
+          "default": "rise",
+          "description": "本页入场动画。"
+        }
+      },
+      "additionalProperties": true
+    },
+    "item": {
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "label": { "type": "string" },
+        "text": { "type": "string" },
+        "tag": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "statement": {
+      "allOf": [
+        { "$ref": "#/$defs/common" },
+        {
+          "properties": {
+            "layout": { "const": "statement" },
+            "title": { "type": "string", "description": "一句主张，建议 12-30 字。" }
+          },
+          "required": ["layout", "title"]
+        }
+      ]
+    },
+    "agenda": {
+      "allOf": [
+        { "$ref": "#/$defs/common" },
+        {
+          "properties": {
+            "layout": { "const": "agenda" },
+            "items": { "type": "array", "minItems": 1, "maxItems": 8, "items": { "$ref": "#/$defs/item" } }
+          },
+          "required": ["layout", "title", "items"]
+        }
+      ]
+    },
+    "bullets": {
+      "allOf": [
+        { "$ref": "#/$defs/common" },
+        {
+          "properties": {
+            "layout": { "const": "bullets" },
+            "aside": {
+              "type": "object",
+              "properties": {
+                "value": { "type": "string" },
+                "label": { "type": "string" }
+              }
+            },
+            "items": { "type": "array", "minItems": 1, "maxItems": 8, "items": { "$ref": "#/$defs/item" } }
+          },
+          "required": ["layout", "title", "items"]
+        }
+      ]
+    },
+    "split": {
+      "allOf": [
+        { "$ref": "#/$defs/common" },
+        {
+          "properties": {
+            "layout": { "const": "split" },
+            "reverse": { "type": "boolean", "description": "媒体放在左侧。" },
+            "bullets": { "type": "array", "items": { "type": "string" } },
+            "media": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "enum": ["grid", "orbit", "bars", "rings", "type"] },
+                "text": { "type": "string", "description": "type 视觉中心的文字。" },
+                "src": { "type": "string", "description": "图片 http(s)/相对路径；优先于抽象视觉。" },
+                "alt": { "type": "string" },
+                "caption": { "type": "string" }
+              }
+            }
+          },
+          "required": ["layout", "title"]
+        }
+      ]
+    },
+    "stats": {
+      "allOf": [
+        { "$ref": "#/$defs/common" },
+        {
+          "properties": {
+            "layout": { "const": "stats" },
+            "source": { "type": "string" },
+            "items": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 4,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "value": { "type": ["string", "number"], "description": "92、3.5、18 等；可带后缀，模板会自动推断。" },
+                  "prefix": { "type": "string" },
+                  "suffix": { "type": "string" },
+                  "decimals": { "type": "integer", "minimum": 0, "maximum": 3 },
+                  "label": { "type": "string" },
+                  "note": { "type": "string" }
+                },
+                "required": ["value", "label"]
+              }
+            }
+          },
+          "required": ["layout", "title", "items"]
+        }
+      ]
+    },
+    "timeline": {
+      "allOf": [
+        { "$ref": "#/$defs/common" },
+        {
+          "properties": {
+            "layout": { "const": "timeline" },
+            "items": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 6,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "date": { "type": "string" },
+                  "title": { "type": "string" },
+                  "text": { "type": "string" }
+                },
+                "required": ["title"]
+              }
+            }
+          },
+          "required": ["layout", "title", "items"]
+        }
+      ]
+    },
+    "compare": {
+      "allOf": [
+        { "$ref": "#/$defs/common" },
+        {
+          "properties": {
+            "layout": { "const": "compare" },
+            "items": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 3,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label": { "type": "string" },
+                  "title": { "type": "string" },
+                  "text": { "type": "string" },
+                  "tone": { "type": "string", "enum": ["accent", "muted", "default"] },
+                  "bullets": { "type": "array", "items": { "type": "string" } }
+                },
+                "required": ["title"]
+              }
+            }
+          },
+          "required": ["layout", "title", "items"]
+        }
+      ]
+    },
+    "quote": {
+      "allOf": [
+        { "$ref": "#/$defs/common" },
+        {
+          "properties": {
+            "layout": { "const": "quote" },
+            "quote": { "type": "string", "description": "引文正文；也可用 title。" },
+            "cite": { "type": "string" },
+            "role": { "type": "string" }
+          },
+          "required": ["layout"]
+        }
+      ]
+    },
+    "section": {
+      "allOf": [
+        { "$ref": "#/$defs/common" },
+        {
+          "properties": {
+            "layout": { "const": "section" },
+            "index": { "type": "string", "description": "章节序号，如 01。" }
+          },
+          "required": ["layout", "title"]
+        }
+      ]
+    },
+    "code": {
+      "allOf": [
+        { "$ref": "#/$defs/common" },
+        {
+          "properties": {
+            "layout": { "const": "code" },
+            "bullets": { "type": "array", "items": { "type": "string" } },
+            "code": {
+              "type": "object",
+              "properties": {
+                "filename": { "type": "string" },
+                "language": { "type": "string" },
+                "content": { "type": "string" }
+              },
+              "required": ["content"]
+            }
+          },
+          "required": ["layout", "title", "code"]
+        }
+      ]
+    },
+    "table": {
+      "allOf": [
+        { "$ref": "#/$defs/common" },
+        {
+          "properties": {
+            "layout": { "const": "table" },
+            "headers": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+            "rows": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "type": "array", "items": { "type": "string" } }
+            },
+            "note": { "type": "string" }
+          },
+          "required": ["layout", "title", "headers", "rows"]
+        }
+      ]
+    },
+    "image": {
+      "allOf": [
+        { "$ref": "#/$defs/common" },
+        {
+          "properties": {
+            "layout": { "const": "image" },
+            "src": { "type": "string" },
+            "alt": { "type": "string" },
+            "caption": { "type": "string" },
+            "image": {
+              "type": "object",
+              "properties": {
+                "src": { "type": "string" },
+                "alt": { "type": "string" },
+                "caption": { "type": "string" }
+              }
+            }
+          },
+          "required": ["layout", "title"]
+        }
+      ]
+    },
+    "closingSlide": {
+      "allOf": [
+        { "$ref": "#/$defs/common" },
+        {
+          "properties": {
+            "layout": { "const": "closing" },
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label": { "type": "string" },
+                  "value": { "type": "string" }
+                }
+              }
+            },
+            "qr": {
+              "type": "object",
+              "properties": {
+                "src": { "type": "string" },
+                "alt": { "type": "string" },
+                "label": { "type": "string" }
+              }
+            }
+          },
+          "required": ["layout", "title"]
+        }
+      ]
+    },
+    "closingBlock": {
+      "type": "object",
+      "properties": {
+        "kicker": { "type": "string" },
+        "title": { "type": "string" },
+        "body": { "type": "string" },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": { "type": "string" },
+              "value": { "type": "string" }
+            }
+          }
+        },
+        "qr": {
+          "type": "object",
+          "properties": {
+            "src": { "type": "string" },
+            "alt": { "type": "string" },
+            "label": { "type": "string" }
+          }
+        }
+      },
+      "required": ["title"],
+      "additionalProperties": true
+    }
+  }
+}

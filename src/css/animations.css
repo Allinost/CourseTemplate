@@ -1,0 +1,266 @@
+/* ==========================================================================
+   Motion system
+   - content is visible without JavaScript
+   - the runtime adds .is-ready, then entrance animations play per slide
+   - export mode freezes every animation at its final state
+   ========================================================================== */
+
+.deck.is-ready .anim {
+  opacity: 0;
+  transform: translate3d(0, 1.8cqw, 0);
+  will-change: opacity, transform;
+}
+
+.deck.is-ready .slide.is-active .anim {
+  animation: var(--anim-name, animRise) 0.95s var(--ease-out) both;
+  animation-delay: calc(120ms + var(--i, 0) * 70ms);
+}
+
+.deck.is-ready .slide.is-active .anim--clip {
+  --anim-name: animClip;
+}
+
+.deck.is-ready .slide.is-active .anim--blur {
+  --anim-name: animBlur;
+}
+
+.deck.is-ready .slide.is-active .anim--scale {
+  --anim-name: animScale;
+}
+
+.deck.is-ready .slide.is-active .anim--left {
+  --anim-name: animLeft;
+}
+
+.deck.is-ready .slide.is-active .anim--right {
+  --anim-name: animRight;
+}
+
+.deck.is-ready .slide.is-active .anim--line {
+  --anim-name: animLine;
+  transform-origin: left center;
+}
+
+@keyframes animRise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 2.2cqw, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes animBlur {
+  from {
+    opacity: 0;
+    filter: blur(1.2cqw);
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+
+@keyframes animClip {
+  from {
+    opacity: 1;
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes animScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes animLeft {
+  from {
+    opacity: 0;
+    transform: translate3d(-2.6cqw, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes animRight {
+  from {
+    opacity: 0;
+    transform: translate3d(2.6cqw, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes animLine {
+  from {
+    opacity: 1;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+/* Ambient motion ---------------------------------------------------------- */
+
+@keyframes scan {
+  0%,
+  100% {
+    transform: translateY(-8cqh);
+    opacity: 0;
+  }
+  35%,
+  65% {
+    opacity: 0.9;
+  }
+  50% {
+    transform: translateY(8cqh);
+  }
+}
+
+@keyframes scanline {
+  from {
+    background-position: 0 -12cqh;
+  }
+  to {
+    background-position: 0 100cqh;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -1.6cqw, 0);
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: perspective(55cqw) rotateX(58deg) rotateZ(-16deg) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: perspective(55cqw) rotateX(58deg) rotateZ(-16deg) translate3d(1.2cqw, -0.8cqw, 0);
+  }
+}
+
+@keyframes barGrow {
+  from {
+    transform: scaleY(0.08);
+    opacity: 0.2;
+  }
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+[data-theme="editorial"] .art-sun,
+[data-theme="tech"] .art-orb,
+[data-theme="ink"] .art-disc {
+  animation: float 12s var(--ease-in-out) infinite;
+}
+
+[data-theme="tech"] .art-grid {
+  animation: drift 18s var(--ease-in-out) infinite;
+}
+
+.slide.is-active .visual--bars i {
+  animation: barGrow 0.85s var(--ease-spring) both;
+}
+
+.slide.is-active .visual--bars i:nth-child(1) {
+  animation-delay: 0.2s;
+}
+
+.slide.is-active .visual--bars i:nth-child(2) {
+  animation-delay: 0.28s;
+}
+
+.slide.is-active .visual--bars i:nth-child(3) {
+  animation-delay: 0.36s;
+}
+
+.slide.is-active .visual--bars i:nth-child(4) {
+  animation-delay: 0.44s;
+}
+
+.slide.is-active .visual--bars i:nth-child(5) {
+  animation-delay: 0.52s;
+}
+
+.slide.is-active .visual--bars i:nth-child(6) {
+  animation-delay: 0.6s;
+}
+
+/* Export freeze ----------------------------------------------------------- */
+
+html.is-export .slide {
+  transition: none !important;
+}
+
+html.is-export .anim,
+html.is-export .deck.is-ready .anim {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  filter: none !important;
+  clip-path: none !important;
+  animation: none !important;
+  transition: none !important;
+  will-change: auto !important;
+}
+
+html.is-export .art-scan,
+html.is-export .art-sun,
+html.is-export .art-orb,
+html.is-export .art-grid,
+html.is-export .art-disc,
+html.is-export .slide::before,
+html.is-export .visual--bars i {
+  animation: none !important;
+}
+
+html.is-export .visual--bars i {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Respect the user's motion preference. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .deck.is-ready .anim {
+    opacity: 1;
+    transform: none;
+  }
+}

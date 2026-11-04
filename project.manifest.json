@@ -1,0 +1,33 @@
+{
+  "project_key": "html-ppt-template",
+  "name": "HTML PPT Template",
+  "type": "template",
+  "description": "零依赖、带动画的 HTML PPT 模板组。一份内容 JSON 可自适应导出 16:9 横版内容、4:3 横版封面、3:4 竖版封面、3:5 竖版内容，并提供 OpenClaw CLI/HTTP 调用协议。",
+  "repo_url": "https://github.com/Allinost/CourseTemplate",
+  "repo_path": ".",
+  "default_branch": "main",
+  "tech_stack": {
+    "runtime": "Node.js >= 20",
+    "frontend": "Vanilla HTML / CSS / JavaScript",
+    "dependencies": "none",
+    "render": "Server-side HTML string rendering + browser runtime",
+    "export": "Standalone HTML + optional Chrome headless PNG"
+  },
+  "status": "active",
+  "docs_root": "docs/projects/html-ppt-template",
+  "entrypoints": {
+    "studio": "src/index.html",
+    "demo": "examples/demo.deck.json",
+    "schema": "openclaw/deck.schema.json",
+    "openclaw_skill": "openclaw/SKILL.md",
+    "cli": "scripts/openclaw.mjs",
+    "http": "scripts/serve.mjs",
+    "build": "scripts/build.mjs"
+  },
+  "formats": [
+    { "ratio": "16:9", "width": 1600, "height": 900, "kind": "content" },
+    { "ratio": "4:3", "width": 1200, "height": 900, "kind": "cover" },
+    { "ratio": "3:4", "width": 900, "height": 1200, "kind": "cover" },
+    { "ratio": "3:5", "width": 900, "height": 1500, "kind": "content" }
+  ]
+}

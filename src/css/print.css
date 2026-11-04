@@ -1,0 +1,75 @@
+/* ==========================================================================
+   Print: one slide per page, exact page size is injected by the document
+   builder (see scripts/lib/document.mjs).
+   ========================================================================== */
+
+@media print {
+  html,
+  body {
+    width: auto;
+    height: auto;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .deck {
+    display: block !important;
+    width: 100%;
+    height: auto;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  .deck__stage {
+    display: block !important;
+    width: 100% !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    overflow: visible !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .deck__ui,
+  .deck__progress {
+    display: none !important;
+  }
+
+  .slide {
+    position: relative !important;
+    inset: auto !important;
+    display: grid !important;
+    width: 100% !important;
+    height: 100vh !important;
+    aspect-ratio: var(--ar) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    page-break-after: always;
+    break-after: page;
+    overflow: hidden;
+  }
+
+  .slide--cover {
+    display: flex !important;
+  }
+
+  .slide:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+
+  .deck.is-ready .anim,
+  html.is-export .anim {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    filter: none !important;
+    clip-path: none !important;
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "name": "html-ppt-template",
+  "version": "1.0.0",
+  "description": "Animated, zero-dependency HTML presentation templates with adaptive 16:9 / 4:3 / 3:4 / 3:5 export.",
+  "license": "Apache-2.0",
+  "entry": "openclaw/SKILL.md",
+  "schema": "openclaw/deck.schema.json",
+  "docs": "docs/projects/html-ppt-template/index.md",
+  "commands": {
+    "info": "node scripts/openclaw.mjs info",
+    "validate": "node scripts/openclaw.mjs validate --input deck.json",
+    "render": "node scripts/openclaw.mjs render --input deck.json --out exports/my-deck --formats all",
+    "screenshot": "node scripts/screenshot.mjs --html exports/my-deck/deck-16x9.html --all",
+    "dev": "npm run dev"
+  },
+  "tools": [
+    {
+      "name": "html_ppt_info",
+      "description": "Return themes, ratios, layouts, schema path and command examples.",
+      "command": "node scripts/openclaw.mjs info",
+      "input": "none",
+      "output": "json"
+    },
+    {
+      "name": "html_ppt_validate",
+      "description": "Validate a deck JSON from a file or stdin. Returns ok, errors and warnings.",
+      "command": "node scripts/openclaw.mjs validate --input -",
+      "input": {
+        "transport": "stdin",
+        "schema": "openclaw/deck.schema.json"
+      },
+      "output": "json"
+    },
+    {
+      "name": "html_ppt_render",
+      "description": "Render a deck JSON into four standalone HTML artboards and a manifest.",
+      "command": "node scripts/openclaw.mjs render --input - --out exports/{{slug}} --formats all",
+      "input": {
+        "transport": "stdin",
+        "schema": "openclaw/deck.schema.json"
+      },
+      "output": "json",
+      "artifacts": [
+        "cover-4x3.html",
+        "cover-3x4.html",
+        "deck-16x9.html",
+        "deck-3x5.html",
+        "deck.json",
+        "manifest.json"
+      ]
+    }
+  ],
+  "http": {
+    "start": "npm run dev",
+    "base": "http://127.0.0.1:4173",
+    "health": "/api/health",
+    "template": "/api/template",
+    "validate": "/api/validate",
+    "render": "/api/openclaw/render",
+    "preview": "/api/render",
+    "studio": "/src/"
+  },
+  "formats": [
+    { "ratio": "16:9", "kind": "content", "width": 1600, "height": 900 },
+    { "ratio": "4:3", "kind": "cover", "width": 1200, "height": 900 },
+    { "ratio": "3:4", "kind": "cover", "width": 900, "height": 1200 },
+    { "ratio": "3:5", "kind": "content", "width": 900, "height": 1500 }
+  ],
+  "themes": [
+    { "id": "editorial", "name": "纸感杂志" },
+    { "id": "tech", "name": "深空极客" },
+    { "id": "consulting", "name": "咨询报告" },
+    { "id": "ink", "name": "黑白宣言" }
+  ]
+}
