@@ -102,6 +102,7 @@ function cacheDom() {
     "canvas-count",
     "btn-prev",
     "btn-next",
+    "btn-focus",
     "btn-demo",
     "btn-import",
     "btn-download",
@@ -580,6 +581,12 @@ function bindEvents() {
 
   dom["btn-prev"].addEventListener("click", () => state.api && state.api.prev());
   dom["btn-next"].addEventListener("click", () => state.api && state.api.next());
+  dom["btn-focus"].addEventListener("click", () => {
+    const focused = document.body.classList.toggle("studio-focus");
+    dom["btn-focus"].textContent = focused ? "退出专注" : "专注预览";
+    dom["btn-focus"].setAttribute("aria-pressed", String(focused));
+    if (state.api) state.api.fitAll();
+  });
   dom["btn-demo"].addEventListener("click", loadDemo);
   dom["btn-download"].addEventListener("click", downloadJson);
   dom["btn-apply-appearance"].addEventListener("click", applyAppearance);

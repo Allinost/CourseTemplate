@@ -37,7 +37,7 @@
 npm run dev
 # http://127.0.0.1:4173/src/
 
-# 2. 构建示例的四种主题
+# 2. 构建示例的五套主题
 npm run build
 # dist/index.html 是主题画廊
 
@@ -63,6 +63,28 @@ exports/course-design/
 ├── manifest.json       # 机器可读的产物清单
 └── index.html          # 本 deck 的格式入口
 ```
+
+## 使用 Studio
+
+Studio 是 `src/index.html`，必须通过本地 HTTP 服务打开：
+
+1. 在项目根目录运行：
+   ```bash
+   npm run dev
+   ```
+2. 打开：
+   ```text
+   http://127.0.0.1:4173/src/
+   ```
+   也可以先打开根目录 `index.html`，按页面提示启动服务后点「进入 Studio」。
+3. 界面分区：
+   - **左侧**：主题、画布比例（默认跟随窗口）、外观/自定义配色、页面列表
+   - **中间**：实时预览；点「专注预览」可隐藏两侧栏，把画布放大到接近全屏（字号也随之放大）
+   - **右侧**：OpenClaw 命令、内容 JSON、校验/格式化、导出结果
+4. 编辑 JSON 后点「应用并预览」；点「导出四种格式」会在 `exports/<slug>-<theme>/` 生成独立 HTML。
+5. 直接双击 `index.html` 属于 `file://` 打开，浏览器会拦截 ES Module 和示例 JSON 请求，所以必须用 `npm run dev`。
+
+> 提示：觉得预览字小，优先点顶部的「专注预览」；导出 HTML 本身已使用放大后的字号。
 
 ## 内容模型
 
@@ -225,6 +247,9 @@ node scripts/screenshot.mjs --html exports/course-design/deck-16x9.html --all
 
 # 单页导出
 node scripts/screenshot.mjs --html exports/course-design/cover-3x4.html --slide 1 --out preview/cover.png
+
+# 生成本地原创主题示例图（examples/generated/ 已被 gitignore）
+npm run examples:art
 ```
 
 `?export=1&slide=N` 会关闭动画、隐藏控制条并把画布填满视口；配合 `--force-device-scale-factor=1` 得到精确尺寸。

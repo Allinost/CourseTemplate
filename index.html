@@ -3,10 +3,75 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="refresh" content="0; url=./src/index.html">
-  <title>HTML PPT Template</title>
+  <title>HTML PPT Template · 启动</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px;
+      background:
+        radial-gradient(900px 500px at 50% -10%, rgba(94, 234, 212, .09), transparent 65%),
+        #08090b;
+      color: #f1f1f3;
+      font-family: Inter, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    .card {
+      width: min(760px, 100%);
+      padding: clamp(28px, 5vw, 56px);
+      border: 1px solid #25272c;
+      border-radius: 20px;
+      background: #101216;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, .35);
+    }
+    .eyebrow {
+      margin: 0 0 14px; color: #5eead4;
+      font: 11px/1.4 "Cascadia Code", Consolas, monospace;
+      letter-spacing: .16em; text-transform: uppercase;
+    }
+    h1 { margin: 0 0 10px; font-size: clamp(28px, 5vw, 44px); letter-spacing: -.04em; }
+    p { margin: 0; color: #9aa1ad; font-size: 15px; line-height: 1.7; }
+    .steps { display: grid; gap: 10px; margin: 26px 0; }
+    .step { display: grid; grid-template-columns: 28px 1fr; gap: 10px; padding: 14px 16px;
+      border: 1px solid #24272e; border-radius: 12px; background: #0c0e12; }
+    .num { color: #5eead4; font: 12px/1.5 "Cascadia Code", Consolas, monospace; }
+    code { padding: 2px 6px; border: 1px solid #2a2e36; border-radius: 5px;
+      background: #15181e; color: #b9f7ec; font-family: "Cascadia Code", Consolas, monospace; font-size: 13px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+    a { display: inline-flex; align-items: center; justify-content: center; min-height: 40px;
+      padding: 0 16px; border-radius: 10px; text-decoration: none; font-size: 13px; font-weight: 600; }
+    .primary { background: #5eead4; color: #06231e; }
+    .secondary { border: 1px solid #2c3038; color: #cfd3db; }
+    .warn { margin-top: 20px; padding: 12px 14px; border: 1px solid #5b3a22;
+      border-radius: 10px; background: rgba(245, 158, 11, .07); color: #f4c98b;
+      font-size: 12px; line-height: 1.6; }
+    .warn[hidden] { display: none; }
+  </style>
 </head>
 <body>
-  <p>正在打开模板工作台… <a href="./src/index.html">进入工作台</a></p>
+  <main class="card">
+    <p class="eyebrow">HTML PPT TEMPLATE / STUDIO</p>
+    <h1>启动模板工作台</h1>
+    <p>Studio 需要本地 HTTP 服务（读取示例 JSON、调用导出接口、加载 ES Module）。直接双击 HTML 文件会受浏览器 <code>file://</code> 安全限制。</p>
+
+    <div class="steps">
+      <div class="step"><span class="num">01</span><div>在项目根目录运行 <code>npm run dev</code></div></div>
+      <div class="step"><span class="num">02</span><div>浏览器打开 <code>http://127.0.0.1:4173/src/</code></div></div>
+      <div class="step"><span class="num">03</span><div>左侧选主题/比例/外观，中间看预览，右侧编辑 JSON 或导出四种格式。</div></div>
+    </div>
+
+    <div class="actions">
+      <a class="primary" href="http://127.0.0.1:4173/src/">进入 Studio（需已启动服务）</a>
+      <a class="secondary" href="./README.md">阅读 README</a>
+    </div>
+
+    <div class="warn" id="file-warning" hidden>
+      当前是 <code>file://</code> 打开方式，Studio 的示例加载、导出与字体模块会被浏览器拦截。请先运行 <code>npm run dev</code>，再访问 <code>http://127.0.0.1:4173/src/</code>。
+    </div>
+  </main>
+  <script>
+    if (location.protocol === "file:") {
+      document.getElementById("file-warning").hidden = false;
+    }
+  </script>
 </body>
 </html>

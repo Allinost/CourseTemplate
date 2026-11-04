@@ -14,6 +14,7 @@ npm run build     # 示例 × 5 主题 -> dist/
 npm test          # node:test
 npm run check     # 项目文档 + 校验 + 全比例渲染 + 临时构建
 npm run validate  # 示例内容校验
+npm run examples:art # 生成本地主题示例图（examples/generated/ 已忽略）
 ```
 
 Windows 下统一使用 PowerShell / Git Bash；不要引入 `npm install` 依赖。

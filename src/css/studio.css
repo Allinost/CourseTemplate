@@ -567,6 +567,23 @@ select {
   text-transform: uppercase;
 }
 
+body.studio-focus .studio-panel {
+  display: none;
+}
+
+body.studio-focus .studio-main {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+body.studio-focus .studio-canvas {
+  padding: 14px 22px 18px;
+}
+
+body.studio-focus .studio-stage .deck__stage {
+  width: min(100%, calc((100vh - 150px) * var(--ar)));
+  max-height: calc(100vh - 150px);
+}
+
 .field {
   display: grid;
   gap: 6px;

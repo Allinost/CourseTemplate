@@ -14,6 +14,7 @@
 - **字号放大**：提升 16:9 正文、3:4 / 3:5 标题与正文的基础倍率，竖版列表与表格更易读。
 - **商用合规文档**：`05-licensing.md`，记录 OFL 字体策略、图片/代码来源与商用发布清单。
 - **单浏览器截图**：`scripts/screenshot.mjs` 复用同一个 Chrome page target，不再每页新开窗口。
+- **本地示例图**：`scripts/generate-theme-art.mjs` 用同一浏览器会话生成 4 张原创主题视觉；`examples/generated/` 已 gitignore，不提交图片。
 
 ### Changed
 

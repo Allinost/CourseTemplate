@@ -17,6 +17,7 @@
     "check": "node scripts/check.mjs",
     "sop-check": "node scripts/check.mjs",
     "openclaw": "node scripts/openclaw.mjs",
-    "screenshot": "node scripts/screenshot.mjs"
+    "screenshot": "node scripts/screenshot.mjs",
+    "examples:art": "node scripts/generate-theme-art.mjs"
   }
 }

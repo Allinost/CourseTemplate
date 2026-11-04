@@ -685,7 +685,7 @@
 }
 
 [data-ratio="3:4"] .cover__title {
-  font-size: calc(var(--fs) * 7.8 * var(--title-scale, 1));
+  font-size: calc(var(--fs) * 7.0 * var(--title-scale, 1));
   max-width: 9.8em;
 }
 
@@ -721,7 +721,7 @@
 }
 
 [data-ratio="3:5"] .cover__title {
-  font-size: calc(var(--fs) * 7.6 * var(--title-scale, 1));
+  font-size: calc(var(--fs) * 6.7 * var(--title-scale, 1));
   max-width: 9.8em;
 }
 
