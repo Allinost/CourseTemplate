@@ -21,6 +21,15 @@ export const THEMES = [
     palette: { bg: "#f2ecdf", bg2: "#e7dcc8", ink: "#1d1a15", muted: "#6d6457", accent: "#d4532d", accent2: "#255c4b" },
   },
   {
+    id: "academic",
+    name: "学术讲义",
+    en: "Academic",
+    description: "冷纸底、深海军蓝、酒红索引、衬线标题与双线框。适合论文汇报、课程讲义、研究综述。",
+    accent: "#1f4e79",
+    bg: "#f6f3ea",
+    palette: { bg: "#f6f3ea", bg2: "#e7e0d1", ink: "#172033", muted: "#5f6b7c", accent: "#1f4e79", accent2: "#7a2e3b" },
+  },
+  {
     id: "tech",
     name: "深空极客",
     en: "Tech",
@@ -28,6 +37,15 @@ export const THEMES = [
     accent: "#5eead4",
     bg: "#070d17",
     palette: { bg: "#070d17", bg2: "#040811", ink: "#eaf2ff", muted: "#8ca1bb", accent: "#5eead4", accent2: "#a3e635" },
+  },
+  {
+    id: "software",
+    name: "开发文档",
+    en: "Software",
+    description: "冷灰蓝底、IDE 窗口、等宽标题、蓝紫强调。适合开发者大会、API 文档、产品技术方案。",
+    accent: "#2563eb",
+    bg: "#eef2f8",
+    palette: { bg: "#eef2f8", bg2: "#dbe3ef", ink: "#0b1220", muted: "#52617a", accent: "#2563eb", accent2: "#7c3aed" },
   },
   {
     id: "consulting",
@@ -417,6 +435,15 @@ function renderFoot(deck, index, total) {
 function renderCoverArt(theme, mark) {
   const safeMark = escapeHtml(mark || "01");
   switch (theme) {
+    case "academic":
+      return `<span class="art-sheet" aria-hidden="true"></span>
+        <span class="art-margin" aria-hidden="true"></span>
+        <span class="art-tab" aria-hidden="true"></span>
+        <span class="art-word" aria-hidden="true">${safeMark}</span>`;
+    case "software":
+      return `<span class="art-window" aria-hidden="true"></span>
+        <span class="art-brackets" aria-hidden="true">{ }</span>
+        <span class="art-tab" aria-hidden="true"></span>`;
     case "tech":
       return `<span class="art-grid" aria-hidden="true"></span>
         <span class="art-orb" aria-hidden="true"></span>

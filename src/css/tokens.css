@@ -40,6 +40,7 @@ body.is-standalone {
   --font-sans: "Inter", "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   --font-serif: "Noto Serif SC", "Source Han Serif SC", "LXGW WenKai", "Songti SC", "STSong", "Palatino Linotype", serif;
   --font-mono: "JetBrains Mono", "Cascadia Code", "SFMono-Regular", "Consolas", monospace;
+  --font-code: "JetBrains Mono", "Sarasa Mono SC", "Noto Sans Mono CJK SC", "Cascadia Code", "Microsoft YaHei", "PingFang SC", monospace;
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
@@ -76,6 +77,56 @@ body.is-standalone {
   --mono: var(--font-mono);
   --shadow: 0 2cqw 7cqw rgba(46, 35, 19, 0.14);
   --grain: 0.05;
+  color-scheme: light;
+}
+
+[data-theme="academic"] {
+  --bg: #f6f3ea;
+  --bg-deep: #e7e0d1;
+  --bg-soft: #fffdf8;
+  --ink: #172033;
+  --ink-soft: #2d3a4f;
+  --muted: #5f6b7c;
+  --faint: #98a0ad;
+  --accent: #1f4e79;
+  --accent-ink: #f4f9ff;
+  --accent-2: #7a2e3b;
+  --accent-2-ink: #fff7f7;
+  --line: rgba(23, 32, 51, 0.14);
+  --line-strong: rgba(23, 32, 51, 0.30);
+  --panel: rgba(23, 32, 51, 0.04);
+  --panel-strong: rgba(31, 78, 121, 0.08);
+  --chip: rgba(23, 32, 51, 0.06);
+  --display: var(--font-serif);
+  --body: var(--font-sans);
+  --mono: var(--font-mono);
+  --shadow: 0 2cqw 6cqw rgba(23, 32, 51, 0.12);
+  --grain: 0.04;
+  color-scheme: light;
+}
+
+[data-theme="software"] {
+  --bg: #eef2f8;
+  --bg-deep: #dbe3ef;
+  --bg-soft: #ffffff;
+  --ink: #0b1220;
+  --ink-soft: #1e293b;
+  --muted: #52617a;
+  --faint: #94a3b8;
+  --accent: #2563eb;
+  --accent-ink: #ffffff;
+  --accent-2: #7c3aed;
+  --accent-2-ink: #f5f3ff;
+  --line: rgba(11, 18, 32, 0.14);
+  --line-strong: rgba(11, 18, 32, 0.28);
+  --panel: rgba(11, 18, 32, 0.04);
+  --panel-strong: rgba(37, 99, 235, 0.08);
+  --chip: rgba(11, 18, 32, 0.06);
+  --display: var(--font-code);
+  --body: var(--font-sans);
+  --mono: var(--font-code);
+  --shadow: 0 2cqw 6cqw rgba(11, 18, 32, 0.12);
+  --grain: 0;
   color-scheme: light;
 }
 

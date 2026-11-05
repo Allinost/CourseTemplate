@@ -550,6 +550,166 @@
   writing-mode: vertical-rl;
 }
 
+/* Academic theme surface */
+[data-theme="academic"] .slide__bg::before {
+  background:
+    linear-gradient(90deg, transparent 0 8%, rgba(31, 78, 121, 0.08) 8% 8.12%, transparent 8.12%),
+    linear-gradient(180deg, rgba(31, 78, 121, 0.045), transparent 24%),
+    radial-gradient(46% 56% at 100% 100%, rgba(122, 46, 59, 0.06), transparent 70%);
+}
+
+[data-theme="academic"] .slide::before {
+  content: "";
+  position: absolute;
+  inset: 2cqw;
+  z-index: 2;
+  border: 1px solid var(--line);
+  border-left: 0.35cqw solid var(--accent-2);
+  box-shadow: inset 0 0 0 0.35cqw var(--bg), inset 0 0 0 calc(0.35cqw + 1px) var(--line);
+  pointer-events: none;
+}
+
+/* Software theme surface */
+[data-theme="software"] .slide__bg::before {
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle, rgba(37, 99, 235, 0.16) 1px, transparent 1.3px),
+    linear-gradient(130deg, transparent 0 62%, rgba(124, 58, 237, 0.07) 62% 62.2%, transparent 62.2%),
+    radial-gradient(50% 60% at 100% 0%, rgba(37, 99, 235, 0.10), transparent 70%);
+  background-size: 2.6cqw 2.6cqw, 100% 100%, 100% 100%;
+}
+
+[data-theme="software"] .slide::before {
+  content: "";
+  position: absolute;
+  top: 2.2cqw;
+  left: 2.5cqw;
+  z-index: 2;
+  width: 0.55cqw;
+  height: 0.55cqw;
+  border-radius: 50%;
+  background: #ff5f57;
+  box-shadow: 1.1cqw 0 #febc2e, 2.2cqw 0 #28c840;
+  pointer-events: none;
+}
+
+/* Academic cover art */
+[data-theme="academic"] .art-sheet {
+  top: 8%;
+  right: 0;
+  width: 78%;
+  height: 78%;
+  border: 1px solid var(--line-strong);
+  background: var(--bg-soft);
+  box-shadow: 1.8cqw 1.8cqw 0 var(--panel), 0 2cqw 5cqw rgba(23, 32, 51, 0.10);
+  transform: rotate(-3deg);
+}
+
+[data-theme="academic"] .art-sheet::before {
+  content: "";
+  position: absolute;
+  inset: 12% 10%;
+  background: repeating-linear-gradient(180deg, var(--line) 0 1px, transparent 1px 2.2cqw);
+  opacity: 0.75;
+}
+
+[data-theme="academic"] .art-margin {
+  top: 15%;
+  right: 55%;
+  width: 1px;
+  height: 68%;
+  background: var(--accent);
+  opacity: 0.35;
+}
+
+[data-theme="academic"] .art-tab {
+  top: 24%;
+  right: -1%;
+  width: 5.2cqw;
+  height: 15cqw;
+  background: var(--accent-2);
+}
+
+[data-theme="academic"] .art-word {
+  right: 4%;
+  bottom: 3%;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: calc(var(--fs) * 2.3);
+  letter-spacing: 0.32em;
+  opacity: 0.9;
+  writing-mode: vertical-rl;
+}
+
+.slide[data-ratio="3:5"] .art-sheet {
+  top: 15%;
+  height: 70%;
+}
+
+/* Software cover art */
+[data-theme="software"] .art-window {
+  top: 14%;
+  right: 0;
+  width: 86%;
+  height: 64%;
+  border: 1px solid var(--line-strong);
+  border-radius: 1.2cqw;
+  background: var(--bg-soft);
+  box-shadow: 0 2cqw 5cqw rgba(11, 18, 32, 0.14);
+  transform: rotate(-2deg);
+  overflow: hidden;
+}
+
+[data-theme="software"] .art-window::before {
+  content: "";
+  position: absolute;
+  top: 1.4cqw;
+  left: 1.4cqw;
+  width: 0.65cqw;
+  height: 0.65cqw;
+  border-radius: 50%;
+  background: #ff5f57;
+  box-shadow: 1.15cqw 0 #febc2e, 2.3cqw 0 #28c840;
+}
+
+.slide[data-ratio="3:5"] .art-window {
+  top: 18%;
+  height: 58%;
+}
+
+[data-theme="software"] .art-window::after {
+  content: "";
+  position: absolute;
+  inset: 4.4cqw 2.4cqw 2.4cqw;
+  background:
+    linear-gradient(90deg, var(--accent) 0 24%, transparent 24%) 0 0 / 100% 1.1cqw no-repeat,
+    linear-gradient(90deg, var(--accent-2) 0 38%, transparent 38%) 0 2.8cqw / 100% 1.1cqw no-repeat,
+    linear-gradient(90deg, var(--muted) 0 31%, transparent 31%) 0 5.6cqw / 100% 1.1cqw no-repeat,
+    linear-gradient(90deg, var(--accent) 0 17%, transparent 17%) 4cqw 8.4cqw / 100% 1.1cqw no-repeat,
+    linear-gradient(90deg, var(--muted) 0 44%, transparent 44%) 0 11.2cqw / 100% 1.1cqw no-repeat;
+  opacity: 0.38;
+}
+
+[data-theme="software"] .art-brackets {
+  right: 4%;
+  bottom: 2%;
+  color: transparent;
+  font-family: var(--mono);
+  font-size: calc(var(--fs) * 8);
+  font-weight: 700;
+  letter-spacing: -0.12em;
+  line-height: 0.8;
+  -webkit-text-stroke: 1px var(--line-strong);
+}
+
+[data-theme="software"] .art-tab {
+  top: 20%;
+  right: -1%;
+  width: 4.8cqw;
+  height: 12cqw;
+  background: var(--accent-2);
+}
+
 /* Tech cover art */
 [data-theme="tech"] .art-grid {
   inset: 2% -14% -18% 2%;

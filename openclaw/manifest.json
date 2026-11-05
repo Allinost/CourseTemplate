@@ -68,7 +68,9 @@
   ],
   "themes": [
     { "id": "editorial", "name": "纸感杂志" },
+    { "id": "academic", "name": "学术讲义" },
     { "id": "tech", "name": "深空极客" },
+    { "id": "software", "name": "开发文档" },
     { "id": "consulting", "name": "咨询报告" },
     { "id": "ink", "name": "黑白宣言" },
     { "id": "custom", "name": "自定义" }

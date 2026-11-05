@@ -24,7 +24,8 @@
 ### Changed
 
 - 字体栈优先使用 OFL 开源字体名称：Noto / 思源 / Inter / JetBrains Mono / 霞鹜文楷；不打包字体文件，未安装时回退系统字体。
-- 主题数量从 4 套预设扩展为 4 套预设 + 1 套自定义。
+- **新增主题**：`academic` 学术讲义（冷纸、海军蓝、酒红索引、论文双线框）与 `software` 开发文档（IDE 窗口、等宽标题、蓝紫强调）。
+- 主题数量从 4 套预设扩展为 6 套预设 + 1 套自定义。
 - `openclaw/deck.schema.json` 增加 `appearance`、`custom` 主题与颜色/字号约束。
 - 文档、README、SKILL、manifest 同步到 1.1.0。
 

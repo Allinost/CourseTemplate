@@ -19,7 +19,7 @@
 
 - **一份内容，四种画布**：内容与版式解耦，横版 / 竖版共享同一份语义。
 - **动态自适应**：CSS Container Queries + 字号密度自动收缩（autofit），长内容不会溢出画布。
-- **4 套预设主题 + 自定义主题**：纸感杂志 `editorial`、深空极客 `tech`、咨询报告 `consulting`、黑白宣言 `ink`，以及可自由配色的 `custom`。
+- **6 套预设主题 + 自定义主题**：纸感杂志 `editorial`、学术讲义 `academic`、深空极客 `tech`、开发文档 `software`、咨询报告 `consulting`、黑白宣言 `ink`，以及可自由配色的 `custom`。
 - **13 种内容版式**：观点、议程、要点、图文、数据、时间线、对比、引用、章节、代码、表格、全图、结尾。
 - **动画系统**：入场、错峰、数字滚动、环境动效、卡片生长；支持 `prefers-reduced-motion`。
 - **演示交互**：键盘翻页、触摸滑动、全屏、总览、进度条、URL 定位。
@@ -37,7 +37,7 @@
 npm run dev
 # http://127.0.0.1:4173/src/
 
-# 2. 构建示例的五套主题
+# 2. 构建示例的七套主题
 npm run build
 # dist/index.html 是主题画廊
 
@@ -170,7 +170,9 @@ curl -X POST http://127.0.0.1:4173/api/openclaw/render \
 | id | 名称 | 气质 | 适用 |
 |---|---|---|---|
 | `editorial` | 纸感杂志 | 暖纸、衬线大标题、陶土红 / 墨绿 | 课程、文化、品牌叙事 |
+| `academic` | 学术讲义 | 冷纸、海军蓝、酒红索引、双线框 | 论文汇报、课程讲义、研究综述 |
 | `tech` | 深空极客 | 深空蓝、青色辉光、网格与扫描线 | 技术分享、产品发布、B 站科普 |
+| `software` | 开发文档 | 冷灰蓝、IDE 窗口、等宽标题、蓝紫 | 开发者大会、API 文档、技术方案 |
 | `consulting` | 咨询报告 | 冷白、结构线、蓝色 + 琥珀强调 | 研究报告、商业提案、数据复盘 |
 | `ink` | 黑白宣言 | 高对比黑底、巨型描边字、朱红 | 观点输出、极简演讲 |
 | `custom` | 自定义 | 任意背景、配色、字体与字号 | 品牌 VI、商业项目、客户定制 |
@@ -261,7 +263,7 @@ npm run examples:art
 | 命令 | 说明 |
 |---|---|
 | `npm run dev` | 启动 Studio + HTTP API（默认 4173） |
-| `npm run build` | 示例 × 5 主题 → `dist/` |
+| `npm run build` | 示例 × 7 主题 → `dist/` |
 | `npm run build:one` | 示例 × 当前主题 → `exports/` |
 | `npm run validate` | 校验示例内容 |
 | `npm test` | 渲染、构建、CLI 测试 |

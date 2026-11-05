@@ -135,7 +135,7 @@ Use **one deck for all four outputs**. Do not write separate copy for portrait u
 - Prefer concrete nouns and numbers over adjectives.
 - `kicker` is a short English label in most decks (`THE THESIS`, `AGENDA`, `PART ONE`), but Chinese is allowed.
 - `body` supports `**bold**`, `*italic*`, `` `code` ``, `[link](https://...)`, and newlines.
-- Use `theme`: `editorial` (warm magazine), `tech` (dark geek), `consulting` (clean report), `ink` (high-contrast manifesto), or `custom` with `appearance` for brand palettes.
+- Use `theme`: `editorial` (warm magazine), `academic` (paper/lecture), `tech` (dark geek), `software` (IDE/docs), `consulting` (clean report), `ink` (high-contrast manifesto), or `custom` with `appearance` for brand palettes.
 - Custom appearance: `appearance.colors` (bg / bg2 / ink / muted / accent / accent2 / line / panel), `appearance.background` (`none|gradient|mesh|grid|dots|glass`), `appearance.typography` (font families + base/title/body/kicker scale). See `docs/projects/html-ppt-template/02-content-model.md`.
 - Prefer OFL fonts (Noto / Source Han / Inter / JetBrains Mono / LXGW WenKai); never bundle a proprietary font file.
 - Use `entrance`: `rise` (default), `blur`, `clip`, `scale`, `left`, `right` for variety — but keep at most one special entrance per 3 slides.
