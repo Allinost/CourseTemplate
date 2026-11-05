@@ -226,13 +226,13 @@
 }
 
 .lead {
-  margin: 1.5em 0 0;
+  margin: 0.6em 0 0;
   max-width: 34em;
   color: var(--body-color, var(--muted));
   font-family: var(--body);
   font-size: calc(var(--fs) * 1.36 * var(--body-factor, 1) * var(--body-scale, 1));
   font-weight: 400;
-  line-height: 1.65;
+  line-height: 1.6;
   text-wrap: pretty;
 }
 
@@ -1470,7 +1470,7 @@
 /* The split/compare body copy is intentionally tighter than the generic lead. */
 .l-split .split__text .lead,
 .l-compare > .lead {
-  margin-top: 0.9em;
+  margin-top: 0.6em;
   font-size: calc(var(--fs) * 1.36 * var(--body-factor, 1) * 0.82 * var(--body-scale, 1));
   line-height: 1.45;
 }
@@ -1977,7 +1977,7 @@
 .l-compare {
   display: flex;
   flex-direction: column;
-  gap: 1.9cqw;
+  gap: 0.76cqw;
   flex: 1;
   min-height: 0;
 }
