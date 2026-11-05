@@ -27,6 +27,15 @@ function pushTextLengthWarning(warnings, path, value, limit) {
   }
 }
 
+function pushItemBudgets(warnings, base, items) {
+  if (!Array.isArray(items)) return;
+  items.forEach((item, index) => {
+    if (!isObject(item)) return;
+    pushTextLengthWarning(warnings, `${base}.items[${index}].title`, item.title, 26);
+    pushTextLengthWarning(warnings, `${base}.items[${index}].text`, item.text, 90);
+  });
+}
+
 export function validateDeck(input) {
   const errors = [];
   const warnings = [];
@@ -80,8 +89,9 @@ export function validateDeck(input) {
         warnings.push({ path: `${base}.entrance`, message: `未知动画 "${slide.entrance}"，将回退为 rise。` });
       }
 
-      pushTextLengthWarning(warnings, `${base}.title`, slide.title, 70);
-      pushTextLengthWarning(warnings, `${base}.body`, slide.body, 320);
+      pushTextLengthWarning(warnings, `${base}.title`, slide.title, 30);
+      pushTextLengthWarning(warnings, `${base}.body`, slide.body, 160);
+      pushItemBudgets(warnings, base, slide.items);
 
       switch (slide.layout) {
         case "statement":
@@ -92,8 +102,8 @@ export function validateDeck(input) {
           if (!hasText(slide.title)) errors.push({ path: `${base}.title`, message: "该版式需要 title。" });
           if (!Array.isArray(slide.items) || slide.items.length === 0) {
             errors.push({ path: `${base}.items`, message: "该版式至少需要 1 个 item。" });
-          } else if (slide.items.length > 8) {
-            warnings.push({ path: `${base}.items`, message: "条目超过 8 个，建议拆分或改用表格。" });
+          } else if (slide.items.length > 5) {
+            warnings.push({ path: `${base}.items`, message: "条目超过 5 个，竖版会过于紧凑，建议拆分。" });
           }
           break;
         case "split":
@@ -112,8 +122,8 @@ export function validateDeck(input) {
           if (!hasText(slide.title)) errors.push({ path: `${base}.title`, message: "时间线需要 title。" });
           if (!Array.isArray(slide.items) || slide.items.length < 2) {
             errors.push({ path: `${base}.items`, message: "时间线至少需要 2 个阶段。" });
-          } else if (slide.items.length > 6) {
-            warnings.push({ path: `${base}.items`, message: "时间线超过 6 段，竖版会非常密集。" });
+          } else if (slide.items.length > 5) {
+            warnings.push({ path: `${base}.items`, message: "时间线超过 5 段，竖版会非常密集，建议拆分。" });
           }
           break;
         case "compare":
@@ -134,17 +144,27 @@ export function validateDeck(input) {
           if (!hasText(slide.title)) errors.push({ path: `${base}.title`, message: "代码页需要 title。" });
           if (!isObject(slide.code) || !hasText(slide.code.content)) {
             errors.push({ path: `${base}.code.content`, message: "代码页需要 code.content。" });
+          } else {
+            const lines = String(slide.code.content).split(/\r?\n/);
+            if (lines.length > 18) {
+              warnings.push({ path: `${base}.code.content`, message: `代码 ${lines.length} 行，竖版建议不超过 18 行。` });
+            }
+            if (lines.some((line) => line.length > 100)) {
+              warnings.push({ path: `${base}.code.content`, message: "代码存在超过 100 字符的行，竖版可能换行过密。" });
+            }
           }
           break;
         case "table":
           if (!hasText(slide.title)) errors.push({ path: `${base}.title`, message: "表格页需要 title。" });
           if (!Array.isArray(slide.headers) || slide.headers.length === 0) {
             errors.push({ path: `${base}.headers`, message: "表格页需要 headers。" });
+          } else if (slide.headers.length > 4) {
+            warnings.push({ path: `${base}.headers`, message: "表格超过 4 列，竖版卡片会过密，建议精简。" });
           }
           if (!Array.isArray(slide.rows) || slide.rows.length === 0) {
             errors.push({ path: `${base}.rows`, message: "表格页需要 rows。" });
-          } else if (slide.rows.length > 8) {
-            warnings.push({ path: `${base}.rows`, message: "表格超过 8 行，建议拆分页面。" });
+          } else if (slide.rows.length > 6) {
+            warnings.push({ path: `${base}.rows`, message: "表格超过 6 行，建议拆分页面。" });
           }
           break;
         case "image":

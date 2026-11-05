@@ -130,7 +130,8 @@ Use **one deck for all four outputs**. Do not write separate copy for portrait u
 ## 6. Content quality rules
 
 - One slide = one cognitive action. If a slide has two headlines, split it.
-- Titles: 12–30 Chinese characters; body: ≤120 characters; bullets: 1–3 lines each.
+- Titles: 12–28 Chinese characters; body: ≤140 characters; bullets: 1–3 lines each.
+- Hard budgets: slide title ≤30 chars, body ≤160 chars, item title ≤26 chars, item text ≤90 chars, lists ≤5 items, table ≤6 rows × 4 columns, code ≤18 lines. If you exceed, split the slide.
 - Prefer concrete nouns and numbers over adjectives.
 - `kicker` is a short English label in most decks (`THE THESIS`, `AGENDA`, `PART ONE`), but Chinese is allowed.
 - `body` supports `**bold**`, `*italic*`, `` `code` ``, `[link](https://...)`, and newlines.
