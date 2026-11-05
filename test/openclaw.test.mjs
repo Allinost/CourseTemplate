@@ -25,7 +25,7 @@ test("openclaw info returns a machine-readable contract", () => {
   assert.equal(payload.ok, true);
   assert.equal(payload.name, "html-ppt-template");
   assert.equal(payload.ratios.length, 4);
-  assert.equal(payload.themes.length, 8);
+  assert.equal(payload.themes.length, 9);
   assert.equal(payload.layouts.length, 13);
 });
 

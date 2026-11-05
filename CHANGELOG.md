@@ -26,7 +26,8 @@
 - 字体栈优先使用 OFL 开源字体名称：Noto / 思源 / Inter / JetBrains Mono / 霞鹜文楷；不打包字体文件，未安装时回退系统字体。
 - **学术主题拆分**：原 `academic` 论文/讲义视觉重命名为 `scholar`（学术论文）；新增 `beamer`（LaTeX Beamer：白底、Beamer 蓝、顶部色条、块状卡片与红色 alert）。
 - **新增软件主题**：`software` 开发文档（IDE 窗口、等宽标题、蓝紫强调）。
-- **主题总数**：7 套预设 + 1 套自定义 = 8 套。
+- **新增课程讲授主题**：`lecture` 课程讲授（柔和纸绿、深绿板书、琥珀强调、圆角教学卡片）。
+- **主题总数**：8 套预设 + 1 套自定义 = 9 套。
 - `openclaw/deck.schema.json` 增加 `appearance`、`custom` 主题与颜色/字号约束。
 - 文档、README、SKILL、manifest 同步到 1.1.0。
 

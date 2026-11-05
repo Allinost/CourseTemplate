@@ -570,6 +570,38 @@
 }
 
 /* Beamer theme surface �?LaTeX Beamer */
+/* Lecture theme surface */
+[data-theme="lecture"] .slide__bg::before {
+  background:
+    radial-gradient(56% 58% at 8% 6%, rgba(15, 118, 110, 0.09), transparent 68%),
+    radial-gradient(46% 54% at 96% 94%, rgba(217, 119, 6, 0.07), transparent 70%),
+    linear-gradient(180deg, rgba(20, 49, 38, 0.025), transparent 22%);
+}
+
+[data-theme="lecture"] .slide::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 36%;
+  height: 0.8cqw;
+  z-index: 2;
+  background: linear-gradient(90deg, var(--accent) 0 76%, var(--accent-2) 76% 100%);
+}
+
+[data-theme="lecture"] .stat,
+[data-theme="lecture"] .compare__card,
+[data-theme="lecture"] .agenda__item,
+[data-theme="lecture"] .bullet-list li,
+[data-theme="lecture"] .closing__panel {
+  border-radius: 0.9cqw;
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
+}
+
+[data-theme="lecture"] .stat--accent {
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
 [data-theme="beamer"] .slide__bg::before {
   background:
     linear-gradient(180deg, rgba(11, 79, 138, 0.035), transparent 18%),
@@ -685,6 +717,75 @@
 .slide[data-ratio="3:5"] .art-sheet {
   top: 15%;
   height: 70%;
+}
+
+/* Lecture cover art */
+[data-theme="lecture"] .art-board {
+  top: 17%;
+  right: 1%;
+  width: 76%;
+  height: 58%;
+  border-radius: 1.2cqw;
+  background: #123c32;
+  box-shadow: 0 2cqw 5cqw rgba(20, 49, 38, 0.18);
+  transform: rotate(-2deg);
+  overflow: hidden;
+}
+
+[data-theme="lecture"] .art-board::before {
+  content: "";
+  position: absolute;
+  inset: 12% 10%;
+  background: repeating-linear-gradient(180deg, rgba(245, 247, 242, 0.34) 0 1px, transparent 1px 2.6cqw);
+  opacity: 0.8;
+}
+
+[data-theme="lecture"] .art-board::after {
+  content: "";
+  position: absolute;
+  left: 10%;
+  bottom: 14%;
+  width: 42%;
+  height: 0.35cqw;
+  background: var(--accent-2);
+}
+
+[data-theme="lecture"] .art-chalk {
+  top: 23%;
+  right: 8%;
+  width: 34%;
+  height: 3%;
+  border-radius: 999px;
+  background: rgba(245, 247, 242, 0.8);
+  opacity: 0.7;
+}
+
+[data-theme="lecture"] .art-lesson {
+  right: 14%;
+  bottom: 8%;
+  width: 40%;
+  height: 18%;
+  border-radius: 0.6cqw;
+  border: 1px solid var(--line);
+  border-left: 0.4cqw solid var(--accent-2);
+  background: var(--bg-soft);
+  box-shadow: 0 1.2cqw 3cqw rgba(20, 49, 38, 0.12);
+}
+
+[data-theme="lecture"] .art-word {
+  right: 2%;
+  bottom: 3%;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: calc(var(--fs) * 2.2);
+  letter-spacing: 0.28em;
+  opacity: 0.85;
+  writing-mode: vertical-rl;
+}
+
+.slide[data-ratio="3:5"] .art-board {
+  top: 20%;
+  height: 52%;
 }
 
 /* Beamer cover art */

@@ -105,6 +105,31 @@ body.is-standalone {
   color-scheme: light;
 }
 
+[data-theme="lecture"] {
+  --bg: #f5f7f2;
+  --bg-deep: #e4ebdf;
+  --bg-soft: #ffffff;
+  --ink: #143126;
+  --ink-soft: #264639;
+  --muted: #5b6d62;
+  --faint: #8c9a91;
+  --accent: #0f766e;
+  --accent-ink: #f2fffb;
+  --accent-2: #d97706;
+  --accent-2-ink: #fff8eb;
+  --line: rgba(20, 49, 38, 0.14);
+  --line-strong: rgba(20, 49, 38, 0.28);
+  --panel: rgba(15, 118, 110, 0.05);
+  --panel-strong: rgba(15, 118, 110, 0.10);
+  --chip: rgba(20, 49, 38, 0.06);
+  --display: var(--font-sans);
+  --body: var(--font-sans);
+  --mono: var(--font-mono);
+  --shadow: 0 2cqw 6cqw rgba(20, 49, 38, 0.12);
+  --grain: 0.02;
+  color-scheme: light;
+}
+
 [data-theme="beamer"] {
   --bg: #ffffff;
   --bg-deep: #eef3f8;
@@ -268,10 +293,10 @@ body.is-standalone {
   --pad-y: 3.825cqw;
   --pad-x-pct: 4.2%;
   --pad-y-pct: 3.825%;
-  --fs: calc(1.03cqw * var(--density, 1) * var(--type-scale, 1));
-  --body-factor: 2.05;
-  --kicker-factor: 1.9;
-  --title-scale: 1.26;
+  --fs: calc(1cqw * var(--density, 1) * var(--type-scale, 1));
+  --body-factor: 1.98;
+  --kicker-factor: 1.96;
+  --title-scale: 1.22;
   --title-line: 0.98;
   --cover-title: 6.1;
   --display-title: 5.9;
@@ -285,10 +310,10 @@ body.is-standalone {
   --pad-y: 4.575cqw;
   --pad-x-pct: 4.8%;
   --pad-y-pct: 4.575%;
-  --fs: calc(1.22cqw * var(--density, 1) * var(--type-scale, 1));
-  --body-factor: 2.3;
-  --kicker-factor: 2.0;
-  --title-scale: 1.2;
+  --fs: calc(1.18cqw * var(--density, 1) * var(--type-scale, 1));
+  --body-factor: 2.22;
+  --kicker-factor: 2.06;
+  --title-scale: 1.16;
   --title-line: 0.98;
   --cover-title: 5.4;
   --display-title: 6.5;
@@ -302,10 +327,10 @@ body.is-standalone {
   --pad-y: 7.1cqw;
   --pad-x-pct: 7.4%;
   --pad-y-pct: 7.1%;
-  --fs: calc(1.38cqw * var(--density, 1) * var(--type-scale, 1));
-  --body-factor: 3.4;
-  --kicker-factor: 2.45;
-  --title-scale: 1.2;
+  --fs: calc(1.34cqw * var(--density, 1) * var(--type-scale, 1));
+  --body-factor: 3.3;
+  --kicker-factor: 2.52;
+  --title-scale: 1.16;
   --title-line: 1.02;
   --cover-title: 6.3;
   --display-title: 8.0;
@@ -319,10 +344,10 @@ body.is-standalone {
   --pad-y: 6.2cqw;
   --pad-x-pct: 7.2%;
   --pad-y-pct: 6.2%;
-  --fs: calc(1.47cqw * var(--density, 1) * var(--type-scale, 1));
-  --body-factor: 3.55;
-  --kicker-factor: 2.35;
-  --title-scale: 1.15;
+  --fs: calc(1.41cqw * var(--density, 1) * var(--type-scale, 1));
+  --body-factor: 3.45;
+  --kicker-factor: 2.42;
+  --title-scale: 1.12;
   --title-line: 1.03;
   --cover-title: 6.4;
   --display-title: 8.0;

@@ -25,7 +25,7 @@
         "language": { "type": "string", "default": "zh-CN" },
         "theme": {
           "type": "string",
-          "enum": ["editorial", "scholar", "beamer", "tech", "software", "consulting", "ink", "custom"],
+          "enum": ["editorial", "scholar", "lecture", "beamer", "tech", "software", "consulting", "ink", "custom"],
           "default": "editorial",
           "description": "视觉主题。editorial=纸感杂志；tech=深空极客；consulting=咨询报告；ink=黑白宣言。"
         },

@@ -10,7 +10,7 @@
 
 ```bash
 npm run dev       # Studio + HTTP API, http://127.0.0.1:4173/src/
-npm run build     # 示例 × 8 主题 -> dist/
+npm run build     # 示例 × 9 主题 -> dist/
 npm test          # node:test
 npm run check     # 项目文档 + 校验 + 全比例渲染 + 临时构建
 npm run validate  # 示例内容校验

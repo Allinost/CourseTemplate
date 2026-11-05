@@ -30,6 +30,15 @@ export const THEMES = [
     palette: { bg: "#f6f3ea", bg2: "#e7e0d1", ink: "#172033", muted: "#5f6b7c", accent: "#1f4e79", accent2: "#7a2e3b" },
   },
   {
+    id: "lecture",
+    name: "课程讲授",
+    en: "Lecture",
+    description: "课堂讲授风：柔和纸绿、深绿板书、琥珀强调、圆角教学卡片。适合课程直播、课堂讲义、训练营。",
+    accent: "#0f766e",
+    bg: "#f5f7f2",
+    palette: { bg: "#f5f7f2", bg2: "#e4ebdf", ink: "#143126", muted: "#5b6d62", accent: "#0f766e", accent2: "#d97706" },
+  },
+  {
     id: "beamer",
     name: "LaTeX Beamer",
     en: "Beamer",
@@ -448,6 +457,11 @@ function renderCoverArt(theme, mark) {
       return `<span class="art-sheet" aria-hidden="true"></span>
         <span class="art-margin" aria-hidden="true"></span>
         <span class="art-tab" aria-hidden="true"></span>
+        <span class="art-word" aria-hidden="true">${safeMark}</span>`;
+    case "lecture":
+      return `<span class="art-board" aria-hidden="true"></span>
+        <span class="art-chalk" aria-hidden="true"></span>
+        <span class="art-lesson" aria-hidden="true"></span>
         <span class="art-word" aria-hidden="true">${safeMark}</span>`;
     case "beamer":
       return `<span class="art-beam" aria-hidden="true"></span>

@@ -69,6 +69,7 @@
   "themes": [
     { "id": "editorial", "name": "纸感杂志" },
     { "id": "scholar", "name": "学术论文" },
+    { "id": "lecture", "name": "课程讲授" },
     { "id": "beamer", "name": "LaTeX Beamer" },
     { "id": "tech", "name": "深空极客" },
     { "id": "software", "name": "开发文档" },
