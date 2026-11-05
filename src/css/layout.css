@@ -2421,9 +2421,18 @@
 .l-table {
   display: flex;
   flex-direction: column;
-  gap: 2.2cqw;
+  gap: 0.88cqw;
   flex: 1;
   min-height: 0;
+}
+
+.l-table > .lead {
+  margin-top: 0.6em;
+  line-height: 1.45;
+}
+
+.l-table .table-wrap {
+  margin-top: 0.2cqw;
 }
 
 .table-wrap {
