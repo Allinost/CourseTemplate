@@ -37,7 +37,7 @@
 | `kicker` | string | 否 | `HTML PPT TEMPLATE` | 封面眉题 |
 | `footer` | string | 否 | 组织名 + 标题 | 页脚文本 |
 | `language` | string | 否 | `zh-CN` | `<html lang>` |
-| `theme` | enum | 否 | `editorial` | `editorial` / `academic` / `tech` / `software` / `consulting` / `ink` / `custom` |
+| `theme` | enum | 否 | `editorial` | `editorial` / `scholar` / `beamer` / `tech` / `software` / `consulting` / `ink` / `custom` |
 | `slug` | string | 否 | 由标题生成 | 导出目录名；建议英文短横线 |
 | `mark` | string | 否 | `01` | 封面视觉编号/符号 |
 

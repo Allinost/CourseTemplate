@@ -550,15 +550,15 @@
   writing-mode: vertical-rl;
 }
 
-/* Academic theme surface */
-[data-theme="academic"] .slide__bg::before {
+/* Scholar theme surface �?paper / journal */
+[data-theme="scholar"] .slide__bg::before {
   background:
     linear-gradient(90deg, transparent 0 8%, rgba(31, 78, 121, 0.08) 8% 8.12%, transparent 8.12%),
     linear-gradient(180deg, rgba(31, 78, 121, 0.045), transparent 24%),
     radial-gradient(46% 56% at 100% 100%, rgba(122, 46, 59, 0.06), transparent 70%);
 }
 
-[data-theme="academic"] .slide::before {
+[data-theme="scholar"] .slide::before {
   content: "";
   position: absolute;
   inset: 2cqw;
@@ -567,6 +567,47 @@
   border-left: 0.35cqw solid var(--accent-2);
   box-shadow: inset 0 0 0 0.35cqw var(--bg), inset 0 0 0 calc(0.35cqw + 1px) var(--line);
   pointer-events: none;
+}
+
+/* Beamer theme surface �?LaTeX Beamer */
+[data-theme="beamer"] .slide__bg::before {
+  background:
+    linear-gradient(180deg, rgba(11, 79, 138, 0.035), transparent 18%),
+    linear-gradient(90deg, transparent 0 8%, rgba(11, 79, 138, 0.06) 8% 8.1%, transparent 8.1%);
+}
+
+[data-theme="beamer"] .slide::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  height: 0.9cqw;
+  background: linear-gradient(90deg, var(--accent) 0 72%, var(--accent-2) 72% 100%);
+  pointer-events: none;
+}
+
+[data-theme="beamer"] .slide__foot {
+  border-top: 1px solid var(--accent);
+  color: var(--accent);
+}
+
+[data-theme="beamer"] .slide__foot-page b {
+  color: var(--accent-2);
+}
+
+[data-theme="beamer"] .stat,
+[data-theme="beamer"] .compare__card,
+[data-theme="beamer"] .agenda__item,
+[data-theme="beamer"] .bullet-list li {
+  border-left: 0.3cqw solid var(--accent);
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
+}
+
+[data-theme="beamer"] .compare__card--accent {
+  border-left-color: var(--accent-2);
+  background: color-mix(in srgb, var(--accent-2) 7%, transparent);
 }
 
 /* Software theme surface */
@@ -594,7 +635,7 @@
 }
 
 /* Academic cover art */
-[data-theme="academic"] .art-sheet {
+[data-theme="scholar"] .art-sheet {
   top: 8%;
   right: 0;
   width: 78%;
@@ -605,7 +646,7 @@
   transform: rotate(-3deg);
 }
 
-[data-theme="academic"] .art-sheet::before {
+[data-theme="scholar"] .art-sheet::before {
   content: "";
   position: absolute;
   inset: 12% 10%;
@@ -613,7 +654,7 @@
   opacity: 0.75;
 }
 
-[data-theme="academic"] .art-margin {
+[data-theme="scholar"] .art-margin {
   top: 15%;
   right: 55%;
   width: 1px;
@@ -622,7 +663,7 @@
   opacity: 0.35;
 }
 
-[data-theme="academic"] .art-tab {
+[data-theme="scholar"] .art-tab {
   top: 24%;
   right: -1%;
   width: 5.2cqw;
@@ -630,7 +671,7 @@
   background: var(--accent-2);
 }
 
-[data-theme="academic"] .art-word {
+[data-theme="scholar"] .art-word {
   right: 4%;
   bottom: 3%;
   color: var(--accent);
@@ -644,6 +685,83 @@
 .slide[data-ratio="3:5"] .art-sheet {
   top: 15%;
   height: 70%;
+}
+
+/* Beamer cover art */
+[data-theme="beamer"] .art-beam {
+  top: 12%;
+  right: -12%;
+  width: 76%;
+  height: 9%;
+  background: var(--accent);
+  opacity: 0.9;
+  transform: rotate(-24deg);
+}
+
+[data-theme="beamer"] .art-beamer-block {
+  top: 22%;
+  right: 2%;
+  width: 74%;
+  height: 46%;
+  border: 1px solid var(--line-strong);
+  background: var(--bg-soft);
+  box-shadow: 0 2cqw 4cqw rgba(15, 39, 66, 0.10);
+  overflow: hidden;
+}
+
+[data-theme="beamer"] .art-beamer-block::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 19%;
+  background: var(--accent);
+}
+
+[data-theme="beamer"] .art-beamer-block::after {
+  content: "";
+  position: absolute;
+  inset: 28% 8% 10%;
+  background: repeating-linear-gradient(180deg, var(--line) 0 1px, transparent 1px 2.4cqw);
+  opacity: 0.8;
+}
+
+[data-theme="beamer"] .art-beamer-alert {
+  right: 16%;
+  bottom: 7%;
+  width: 42%;
+  height: 17%;
+  border: 1px solid var(--line-strong);
+  background: var(--bg-soft);
+  box-shadow: 0 1.2cqw 3cqw rgba(15, 39, 66, 0.10);
+  overflow: hidden;
+}
+
+[data-theme="beamer"] .art-beamer-alert::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 28%;
+  background: var(--accent-2);
+}
+
+[data-theme="beamer"] .art-word {
+  right: 3%;
+  bottom: 3%;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: calc(var(--fs) * 2.2);
+  letter-spacing: 0.28em;
+  opacity: 0.85;
+  writing-mode: vertical-rl;
+}
+
+.slide[data-ratio="3:5"] .art-beamer-block {
+  top: 18%;
+  height: 40%;
+}
+
+.slide[data-ratio="3:5"] .art-beamer-alert {
+  bottom: 9%;
 }
 
 /* Software cover art */

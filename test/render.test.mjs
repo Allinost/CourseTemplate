@@ -162,10 +162,10 @@ test("standalone document embeds CSS, runtime and a print page size", async () =
 });
 
 test("all themes are declared", () => {
-  assert.equal(THEMES.length, 7);
+  assert.equal(THEMES.length, 8);
   assert.deepEqual(
     THEMES.map((theme) => theme.id),
-    ["editorial", "academic", "tech", "software", "consulting", "ink", "custom"],
+    ["editorial", "scholar", "beamer", "tech", "software", "consulting", "ink", "custom"],
   );
 });
 

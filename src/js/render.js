@@ -21,13 +21,22 @@ export const THEMES = [
     palette: { bg: "#f2ecdf", bg2: "#e7dcc8", ink: "#1d1a15", muted: "#6d6457", accent: "#d4532d", accent2: "#255c4b" },
   },
   {
-    id: "academic",
-    name: "学术讲义",
-    en: "Academic",
-    description: "冷纸底、深海军蓝、酒红索引、衬线标题与双线框。适合论文汇报、课程讲义、研究综述。",
+    id: "scholar",
+    name: "学术论文",
+    en: "Scholar",
+    description: "冷纸底、深海军蓝、酒红索引、衬线标题与论文双线框。适合论文汇报、课程讲义、研究综述。",
     accent: "#1f4e79",
     bg: "#f6f3ea",
     palette: { bg: "#f6f3ea", bg2: "#e7e0d1", ink: "#172033", muted: "#5f6b7c", accent: "#1f4e79", accent2: "#7a2e3b" },
+  },
+  {
+    id: "beamer",
+    name: "LaTeX Beamer",
+    en: "Beamer",
+    description: "LaTeX Beamer 风格：白底、Beamer 蓝、顶部色条、块状卡片与红色 alert。适合论文答辩、学术报告、课堂讲义。",
+    accent: "#0b4f8a",
+    bg: "#ffffff",
+    palette: { bg: "#ffffff", bg2: "#eef3f8", ink: "#0f2742", muted: "#52667a", accent: "#0b4f8a", accent2: "#b23a48" },
   },
   {
     id: "tech",
@@ -435,10 +444,15 @@ function renderFoot(deck, index, total) {
 function renderCoverArt(theme, mark) {
   const safeMark = escapeHtml(mark || "01");
   switch (theme) {
-    case "academic":
+    case "scholar":
       return `<span class="art-sheet" aria-hidden="true"></span>
         <span class="art-margin" aria-hidden="true"></span>
         <span class="art-tab" aria-hidden="true"></span>
+        <span class="art-word" aria-hidden="true">${safeMark}</span>`;
+    case "beamer":
+      return `<span class="art-beam" aria-hidden="true"></span>
+        <span class="art-beamer-block" aria-hidden="true"></span>
+        <span class="art-beamer-alert" aria-hidden="true"></span>
         <span class="art-word" aria-hidden="true">${safeMark}</span>`;
     case "software":
       return `<span class="art-window" aria-hidden="true"></span>
