@@ -4,7 +4,7 @@
  * screenshots can run in parallel without opening a new browser per image.
  */
 
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { mkdir, mkdtemp, rm, stat, writeFile } from "node:fs/promises";
 import { setTimeout as delay } from "node:timers/promises";
@@ -117,7 +117,7 @@ async function connectPage(target) {
   return {
     ws,
     cdp,
-    async capture({ url, width = 1600, height = 900, output }) {
+    async navigate({ url, width = 1600, height = 900 }) {
       await cdp.send("Emulation.setDeviceMetricsOverride", {
         width,
         height,
@@ -132,7 +132,11 @@ async function connectPage(target) {
         awaitPromise: true,
       });
       await cdp.send("Runtime.evaluate", { expression: "window.scrollTo(0, 0)" });
-      await delay(1200);
+      await delay(80);
+    },
+    async capture({ url, width = 1600, height = 900, output }) {
+      await this.navigate({ url, width, height });
+      await delay(1120);
       const shot = await cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true });
       await mkdir(path.dirname(output), { recursive: true });
       await writeFile(output, Buffer.from(shot.data, "base64"));
@@ -211,6 +215,7 @@ export async function createBrowser(options = {}) {
     chrome,
     port,
     createPage,
+    navigate: (task) => initialPage.navigate(task),
     capture: (task) => initialPage.capture(task),
     evaluate: (expression) => initialPage.evaluate(expression),
     screenshot: (output) => initialPage.screenshot(output),
@@ -234,7 +239,24 @@ export async function createBrowser(options = {}) {
     },
     async close() {
       pages.forEach((page) => page.close());
-      child.kill();
+      if (process.platform === "win32") {
+        spawnSync("taskkill", ["/pid", String(child.pid), "/t", "/f"], {
+          windowsHide: true,
+          stdio: "ignore",
+        });
+        const script = [
+          "$profile = '" + profile.replace(/'/g, "''") + "';",
+          "Get-CimInstance Win32_Process -Filter \"Name='chrome.exe'\" |",
+          "Where-Object { $_.CommandLine -and $_.CommandLine.Contains($profile) } |",
+          "ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }",
+        ].join(" ");
+        spawnSync("powershell.exe", ["-NoProfile", "-Command", script], {
+          windowsHide: true,
+          stdio: "ignore",
+        });
+      } else {
+        child.kill();
+      }
       await delay(250);
       await rm(profile, { recursive: true, force: true }).catch(() => {});
     },

@@ -553,9 +553,9 @@
 /* Scholar theme surface �?paper / journal */
 [data-theme="scholar"] .slide__bg::before {
   background:
-    linear-gradient(90deg, transparent 0 8%, rgba(31, 78, 121, 0.08) 8% 8.12%, transparent 8.12%),
-    linear-gradient(180deg, rgba(31, 78, 121, 0.045), transparent 24%),
-    radial-gradient(46% 56% at 100% 100%, rgba(122, 46, 59, 0.06), transparent 70%);
+    linear-gradient(90deg, transparent 0 8%, rgba(14, 58, 102, 0.10) 8% 8.12%, transparent 8.12%),
+    linear-gradient(180deg, rgba(14, 58, 102, 0.055), transparent 26%),
+    radial-gradient(50% 60% at 100% 100%, rgba(47, 111, 168, 0.08), transparent 72%);
 }
 
 [data-theme="scholar"] .slide::before {
@@ -564,7 +564,7 @@
   inset: 2cqw;
   z-index: 2;
   border: 1px solid var(--line);
-  border-left: 0.35cqw solid var(--accent-2);
+  border-left: 0.35cqw solid var(--accent);
   box-shadow: inset 0 0 0 0.35cqw var(--bg), inset 0 0 0 calc(0.35cqw + 1px) var(--line);
   pointer-events: none;
 }
@@ -638,8 +638,22 @@
 }
 
 [data-theme="beamer"] .compare__card--accent {
-  border-left-color: var(--accent-2);
-  background: color-mix(in srgb, var(--accent-2) 7%, transparent);
+  border-left-color: transparent;
+  background: var(--accent-2);
+  color: var(--accent-2-ink);
+}
+
+[data-theme="beamer"] .compare__card--accent .compare__label,
+[data-theme="beamer"] .compare__card--accent .compare__title,
+[data-theme="beamer"] .compare__card--accent .compare__text,
+[data-theme="beamer"] .compare__card--accent .compare__list {
+  color: var(--accent-2-ink);
+}
+
+[data-theme="lecture"] .compare__card--accent {
+  border-left-color: transparent;
+  background: var(--accent);
+  color: var(--accent-ink);
 }
 
 /* Software theme surface */
@@ -700,7 +714,7 @@
   right: -1%;
   width: 5.2cqw;
   height: 15cqw;
-  background: var(--accent-2);
+  background: var(--accent);
 }
 
 [data-theme="scholar"] .art-word {
@@ -1447,10 +1461,22 @@
 .l-split {
   display: grid;
   grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
-  gap: 4cqw;
+  gap: 3.2cqw;
   flex: 1;
   min-height: 0;
   align-items: stretch;
+}
+
+/* The split/compare body copy is intentionally tighter than the generic lead. */
+.l-split .split__text .lead,
+.l-compare > .lead {
+  margin-top: 0.9em;
+  font-size: calc(var(--fs) * 1.36 * var(--body-factor, 1) * 0.82 * var(--body-scale, 1));
+  line-height: 1.45;
+}
+
+.l-split .split__points {
+  margin-top: 1.1em;
 }
 
 .l-split--reverse .split__media {
@@ -1660,7 +1686,7 @@
 [data-orientation="portrait"] .l-split {
   grid-template-columns: 1fr;
   grid-template-rows: auto minmax(0, 1fr);
-  gap: 3cqw;
+  gap: 2.4cqw;
 }
 
 [data-orientation="portrait"] .l-split--reverse .split__media {
@@ -1951,7 +1977,7 @@
 .l-compare {
   display: flex;
   flex-direction: column;
-  gap: 2.4cqw;
+  gap: 1.9cqw;
   flex: 1;
   min-height: 0;
 }
@@ -1959,7 +1985,7 @@
 .compare {
   display: grid;
   grid-template-columns: repeat(var(--count, 2), minmax(0, 1fr));
-  gap: 1.8cqw;
+  gap: 1.3cqw;
   flex: 1;
   min-height: 0;
 }
@@ -1971,6 +1997,25 @@
   padding: 2.4cqw;
   border: 1px solid var(--line);
   background: var(--panel);
+}
+
+.l-compare .compare__card {
+  overflow: hidden;
+  padding: 2.1cqw;
+}
+
+.l-compare .compare__title {
+  font-size: calc(var(--fs) * 1.65 * var(--body-factor, 1) * 0.74 * var(--body-scale, 1));
+}
+
+.l-compare .compare__text {
+  font-size: calc(var(--fs) * 0.98 * var(--body-factor, 1) * 0.9 * var(--body-scale, 1));
+}
+
+.l-compare .compare__list {
+  gap: 0.55em;
+  padding-top: 1em;
+  font-size: calc(var(--fs) * 0.92 * var(--body-factor, 1) * 0.9 * var(--body-scale, 1));
 }
 
 .compare__card--accent {
